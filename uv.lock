@@ -12,9 +12,9 @@ wheels = [
 ]
 
 [[package]]
-name = "fknc-calc-source"
+name = "fknc-calc"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "orjson" },
     { name = "pydantic" },

@@ -1,3 +1,4 @@
+from importlib.resources import files, as_file
 from typing import Literal
 
 import orjson
@@ -82,14 +83,19 @@ def calc_price(plant: Plant, weight: float, mutations: list[Mutation]) -> PriceR
 
 
 def load_data() -> tuple[list[Plant], list[Mutation]]:
-    with open("plants.json", "rb") as f:
-        data = f.read()
-        raw_list: list = orjson.loads(data)
-        plants = list(map(Plant.model_validate, raw_list))
+    base_dir = files("fknc_calc")
+    with (
+        as_file(base_dir / "plants.json") as plants_file,
+        as_file(base_dir / "mutations.json") as mutations_file,
+    ):
+        with open(plants_file, "rb") as f:
+            data = f.read()
+            raw_list: list = orjson.loads(data)
+            plants = list(map(Plant.model_validate, raw_list))
 
-    with open("mutations.json", "rb") as f:
-        data = f.read()
-        raw_list: list = orjson.loads(data)
-        mutations = list(map(Mutation.model_validate, raw_list))
+        with open(mutations_file, "rb") as f:
+            data = f.read()
+            raw_list: list = orjson.loads(data)
+            mutations = list(map(Mutation.model_validate, raw_list))
 
     return plants, mutations

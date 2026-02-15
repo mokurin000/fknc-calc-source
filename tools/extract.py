@@ -41,8 +41,8 @@ def extract_code_blocks(input_file, output_file):
 const fs = require('fs').promises;
 async function exportToJson() {
   try {
-    await fs.writeFile('plants.json', JSON.stringify(plants, null, 2));
-    await fs.writeFile('mutations.json', JSON.stringify(mutations, null, 2));
+    await fs.writeFile('src/fknc_calc/plants.json', JSON.stringify(plants, null, 2));
+    await fs.writeFile('src/fknc_calc/mutations.json', JSON.stringify(mutations, null, 2));
   } catch (error) {
     console.error('写入文件失败:', error);
   }
