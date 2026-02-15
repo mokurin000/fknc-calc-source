@@ -1,0 +1,202 @@
+[
+  {
+    "name": "颤栗",
+    "color": "灰色",
+    "multiplier": 1
+  },
+  {
+    "name": "潮湿",
+    "color": "灰色",
+    "multiplier": 1
+  },
+  {
+    "name": "覆雪",
+    "color": "灰色",
+    "multiplier": 2
+  },
+  {
+    "name": "灼热",
+    "color": "灰色",
+    "multiplier": 2
+  },
+  {
+    "name": "迷雾",
+    "color": "灰色",
+    "multiplier": 2
+  },
+  {
+    "name": "生机",
+    "color": "灰色",
+    "multiplier": 2
+  },
+  {
+    "name": "沙尘",
+    "color": "灰色",
+    "multiplier": 2
+  },
+  {
+    "name": "结霜",
+    "color": "灰色",
+    "multiplier": 2
+  },
+  {
+    "name": "银",
+    "color": "绿色",
+    "multiplier": 3
+  },
+  {
+    "name": "落雷",
+    "color": "绿色",
+    "multiplier": 3
+  },
+  {
+    "name": "冰冻",
+    "color": "绿色",
+    "multiplier": 4
+  },
+  {
+    "name": "陶化",
+    "color": "绿色",
+    "multiplier": 4
+  },
+  {
+    "name": "陨石",
+    "color": "绿色",
+    "multiplier": 3
+  },
+  {
+    "name": "金",
+    "color": "蓝色",
+    "multiplier": 10
+  },
+  {
+    "name": "金币",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "血月",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "幽魂",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "惊魂夜",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "彩虹",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "荧光",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "极光",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "暗雾",
+    "color": "蓝色",
+    "multiplier": 6
+  },
+  {
+    "name": "太阳耀斑",
+    "color": "蓝色",
+    "multiplier": 5
+  },
+  {
+    "name": "瓷化",
+    "color": "紫色",
+    "multiplier": 8
+  },
+  {
+    "name": "星环",
+    "color": "紫色",
+    "multiplier": 10
+  },
+  {
+    "name": "亮晶晶",
+    "color": "紫色",
+    "multiplier": 10
+  },
+  {
+    "name": "日蚀",
+    "color": "紫色",
+    "multiplier": 10
+  },
+  {
+    "name": "水晶",
+    "color": "金色",
+    "multiplier": 20
+  },
+  {
+    "name": "流火",
+    "color": "金色",
+    "multiplier": 15
+  },
+  {
+    "name": "流光",
+    "color": "彩色",
+    "multiplier": 30
+  },
+  {
+    "name": "霓虹",
+    "color": "彩色",
+    "multiplier": 18
+  },
+  {
+    "name": "星空",
+    "color": "彩色",
+    "multiplier": 40
+  },
+  {
+    "name": "薯片",
+    "color": "紫色",
+    "multiplier": 1.5
+  },
+  {
+    "name": "方形",
+    "color": "紫色",
+    "multiplier": 1.5
+  },
+  {
+    "name": "糖葫芦",
+    "color": "紫色",
+    "multiplier": 1.5
+  },
+  {
+    "name": "连体",
+    "color": "紫色",
+    "multiplier": 1.5
+  },
+  {
+    "name": "黄瓜蛇",
+    "color": "金色",
+    "multiplier": 2.5
+  },
+  {
+    "name": "万圣夜",
+    "color": "金色",
+    "multiplier": 2
+  },
+  {
+    "name": "香蕉猴",
+    "color": "金色",
+    "multiplier": 2
+  },
+  {
+    "name": "笑日葵",
+    "color": "彩色",
+    "multiplier": 10
+  }
+]
