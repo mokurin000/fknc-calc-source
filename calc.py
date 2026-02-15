@@ -17,7 +17,7 @@ class Plant(BaseModel):
     price_coefficient: float
     max_weight: float
     growth_speed: float
-    type: str
+    type: Literal["普通", "月球"]
     special_mutations: tuple[str] | None = None
 
 
