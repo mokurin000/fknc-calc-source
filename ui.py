@@ -37,18 +37,24 @@ def main():
         mutation for mutation in mutations if mutation.name in BASE_MUTATIONS
     ]
     base_mutation_names = [mutation.name for mutation in base_mutations]
-    selected_base_mutation_name = st.selectbox("选择基础突变", base_mutation_names)
-
-    # 获取选中的基础突变
-    selected_base_mutation = next(
-        mutation
-        for mutation in base_mutations
-        if mutation.name == selected_base_mutation_name
+    selected_base_mutation_name = st.selectbox(
+        "选择基础突变",
+        ["无"] + base_mutation_names,
     )
 
-    st.write(
-        f"选择的基础突变: {selected_base_mutation.name}, 颜色: {selected_base_mutation.color}, 乘数: {selected_base_mutation.multiplier}"
-    )
+    if selected_base_mutation_name != "无":
+        # 获取选中的基础突变
+        selected_base_mutation = next(
+            mutation
+            for mutation in base_mutations
+            if mutation.name == selected_base_mutation_name
+        )
+
+        st.write(
+            f"选择的基础突变: {selected_base_mutation.name}, 颜色: {selected_base_mutation.color}, 乘数: {selected_base_mutation.multiplier}"
+        )
+    else:
+        selected_base_mutation = None
 
     # 选择其他突变
     other_mutations = [
@@ -84,13 +90,11 @@ def main():
     try:
         # 构建突变列表
         mutations_to_apply = [
-            selected_base_mutation,
-            *[
-                mutation
-                for mutation in mutations
-                if mutation.name in selected_mutations
-            ],
+            mutation for mutation in mutations if mutation.name in selected_mutations
         ]
+
+        if selected_base_mutation is not None:
+            mutations_to_apply.append(selected_base_mutation)
 
         # 计算价格
         price_result = calc_price(selected_plant, weight, mutations_to_apply)
