@@ -58,7 +58,10 @@ def calc_price(plant: Plant, weight: float, mutations: list[Mutation]) -> PriceR
         if mutation.name in BASE_MUTATIONS:
             base_factor = max(base_factor, mutation.multiplier)
             continue
-        if mutation.name in plant.special_mutations:
+        if (
+            plant.special_mutations is not None
+            and mutation.name in plant.special_mutations
+        ):
             special_factor = max(special_factor, mutation.multiplier)
             continue
         mutate_factor += mutation.multiplier
