@@ -1,5 +1,8 @@
+from functools import partial
+
 import streamlit as st
 from fknc_calc import load_data, calc_price, BASE_MUTATIONS, Plant
+from fknc_calc.rules import is_mutation_allowed
 from pydantic import ValidationError
 
 
@@ -14,7 +17,11 @@ def compute_all_special_mutations(plants: list[Plant]) -> set[str]:
 
 def main():
     # 加载植物和突变数据
-    plants, mutations = load_data()
+    if "loaded-data" in st.session_state:
+        plants, mutations = st.session_state["loaded-data"]
+    else:
+        plants, mutations = load_data()
+        st.session_state["loaded-data"] = (plants, mutations)
 
     # 筛选特殊突变
     ALL_SPECIAL_MUTATIONS = compute_all_special_mutations(plants)
@@ -91,10 +98,21 @@ def main():
 
     selectable_names = special + other_mutation_names
 
+    previously_selected: list = st.session_state.get("selected-mutations", [])
+
     selected_mutations = st.multiselect(
         "选择其他突变 (可多选)",
-        selectable_names,
+        list(
+            filter(
+                partial(
+                    is_mutation_allowed,
+                    previously_selected,
+                ),
+                selectable_names,
+            )
+        ),
         default=[],
+        key="selected-mutations",
     )
 
     # 输入作物重量

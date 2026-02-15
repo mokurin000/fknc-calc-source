@@ -1,3 +1,5 @@
+from fknc_calc import Plant
+
 __all__ = ["is_mutation_disabled"]
 
 # 配方数据：每种突变产物所需的原料
@@ -7,6 +9,8 @@ RECIPES = [
     {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
     {"ingredients": ["太阳耀斑", "灼热"], "result": "流火"},
 ]
+
+MOON_ONLY = ["流火", "日蚀", "暗雾", "陨石"]
 
 
 def get_all_ingredients(mutation: str, visited: set[str] | None = None) -> list[str]:
@@ -40,19 +44,28 @@ def get_all_ingredients(mutation: str, visited: set[str] | None = None) -> list[
     return all_ingredients
 
 
-def is_mutation_disabled(new_mutation: str, selected_mutations: list[str]) -> bool:
+def is_mutation_disabled(
+    selected_mutations: list[str],
+    plant: Plant,
+    new_mutation: str,
+) -> bool:
     """
     判断新突变在当前已选中的突变列表中是否应该被禁用
 
     Args:
-        new_mutation: 要检查的新突变名称
         selected_mutations: 当前已选中的突变列表
+        plant: 当前已选中的植物
+        new_mutation: 要检查的新突变名称
 
     Returns:
         True表示禁用（不可选择），False表示可用（可选择）
     """
     if new_mutation == "潮湿":
         return False
+
+    # 非月球果实无法获得月球突变
+    if plant.type != "月球" and new_mutation in MOON_ONLY:
+        return True
 
     if new_mutation == "灼热":
         has_flow_fire = "流火" in selected_mutations
@@ -75,3 +88,11 @@ def is_mutation_disabled(new_mutation: str, selected_mutations: list[str]) -> bo
                 return True
 
     return False
+
+
+def is_mutation_allowed(
+    selected_mutations: list[str],
+    plant: Plant,
+    new_mutation: str,
+) -> bool:
+    return not is_mutation_disabled(selected_mutations, plant, new_mutation)
