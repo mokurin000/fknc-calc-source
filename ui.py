@@ -50,8 +50,26 @@ def main():
             if mutation.name == selected_base_mutation_name
         )
 
+        # 设置颜色映射
+        color_map = {
+            "灰色": "#808080",
+            "绿色": "#18FC18",
+            "蓝色": "#00FFFF",
+            "金色": "#FFD700",
+            "彩色": "#FF4D2E",  # 选择一个颜色，这里使用了番茄色
+            "紫色": "#800080",
+        }
+
+        # 获取颜色
+        color_code = color_map.get(
+            selected_base_mutation.color, "#000000"
+        )  # 默认为黑色
+
+        # 使用 HTML 设置颜色
         st.write(
-            f"选择的基础突变: {selected_base_mutation.name}, 颜色: {selected_base_mutation.color}, 乘数: {selected_base_mutation.multiplier}"
+            f'选择的基础突变: <span style="color:{color_code}">{selected_base_mutation.name}</span>,'
+            f" 乘数: {selected_base_mutation.multiplier}",
+            unsafe_allow_html=True,
         )
     else:
         selected_base_mutation = None
