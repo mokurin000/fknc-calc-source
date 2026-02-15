@@ -5,7 +5,13 @@ import orjson
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
-BASE_MUTATIONS = ["星空", "流光", "水晶", "金", "银"]
+BASE_MUTATIONS = [
+    "银",
+    "金",
+    "水晶",
+    "流光",
+    "星空",
+]
 
 
 class Plant(BaseModel):
@@ -30,9 +36,13 @@ class Mutation(BaseModel):
 
 class PriceResult(BaseModel):
     base_factor: float
+    """基础突变因数"""
     special_factor: float
-    mutate_factor: float
+    """独占突变因数"""
     weight_factor: float
+    """重量因数"""
+    mutate_factor: float
+    """常规突变因数之和，不带额外的 1"""
     total_price: float
 
 
@@ -49,7 +59,7 @@ def calc_price(plant: Plant, weight: float, mutations: list[Mutation]) -> PriceR
 
     base_factor = 1
     special_factor = 1
-    mutate_factor = 1
+    mutate_factor = 0
 
     for mutation in mutations:
         if not isinstance(mutation, Mutation):
@@ -73,7 +83,7 @@ def calc_price(plant: Plant, weight: float, mutations: list[Mutation]) -> PriceR
         * weight_factor
         * base_factor
         * special_factor
-        * mutate_factor
+        * (1 + mutate_factor)
     )
 
     return PriceResult(

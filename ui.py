@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, reduce
 
 import streamlit as st
 from fknc_calc import load_data, calc_price, BASE_MUTATIONS, Plant
@@ -34,16 +34,17 @@ def main():
     selected_plant = next(plant for plant in plants if plant.name == plant_name)
 
     # 显示植物详细信息
-    st.write(f"作物名称: {selected_plant.name}")
-    st.write(f"作物类型: {selected_plant.type}")
-    st.write(f"价格系数: {selected_plant.price_coefficient}")
-    st.write(f"最大重量: {selected_plant.max_weight}")
+    with st.container(horizontal=True):
+        st.write(f"作物类型: {selected_plant.type}")
+        st.write(f"生长速度: {selected_plant.growth_speed}")
 
     # 基础突变选择
     base_mutations = [
         mutation for mutation in mutations if mutation.name in BASE_MUTATIONS
     ]
-    base_mutation_names = [mutation.name for mutation in base_mutations]
+    base_mutation_names = BASE_MUTATIONS[:]
+    if selected_plant.type != "月球":
+        base_mutation_names.remove("星空")
     selected_base_mutation_name = st.selectbox(
         "选择基础突变",
         ["无"] + base_mutation_names,
@@ -107,6 +108,7 @@ def main():
                 partial(
                     is_mutation_allowed,
                     previously_selected,
+                    selected_plant,
                 ),
                 selectable_names,
             )
@@ -136,11 +138,59 @@ def main():
         price_result = calc_price(selected_plant, weight, mutations_to_apply)
 
         # 显示计算结果
-        st.write(f"基础因子: {price_result.base_factor}")
-        st.write(f"重量因子: {price_result.weight_factor:.4f}")
-        st.write(f"特殊因子: {price_result.special_factor}")
-        st.write(f"突变因子: {price_result.mutate_factor}")
-        st.write(f"总价格: {price_result.total_price:.0f}")
+        st.write(f"基础因数: {price_result.base_factor}")
+        st.write(f"重量因数: {price_result.weight_factor:.4f}")
+        st.write(f"特殊因数: {price_result.special_factor}")
+        st.write(f"突变因数: {price_result.mutate_factor}")
+
+        price = price_result.total_price
+
+        if price < 1e4:
+            st.write(f"总价格: {price:.0f}")
+        elif price < 1e8:
+            st.write(f"总价格: {price / 1e4:.4f} 万")
+        else:
+            st.write(f"总价格: {price / 1e8:.4f} 亿")
+
+        st.markdown(
+            """<style>
+span.katex {
+    text-align: left !important;
+}
+</style>""",
+            unsafe_allow_html=True,
+        )
+
+        latex_expression = r"""
+        \text{总价格} \\
+
+        = \text{作物基价} \times \text{重量因数} \times
+        \text{基础突变} \times \text{特殊突变} \times \left(1 + \text{常规突变}\right) \\
+
+        = \left( \text{%.4f} \times \text{%.2f}^{1.5} \right) \times \left(
+        \text{%.1f} \times \text{%.1f} \times \text{%.1f} \right) \\
+
+        = \text{%.4f} \times \text{%.1f} \\
+
+        = \text{%.0f}
+        """ % (
+            selected_plant.price_coefficient,
+            weight,
+            price_result.base_factor,
+            price_result.special_factor,
+            price_result.mutate_factor + 1,
+            selected_plant.price_coefficient * price_result.weight_factor,
+            reduce(
+                lambda a, b: a * b,
+                [
+                    price_result.base_factor,
+                    price_result.special_factor,
+                    price_result.mutate_factor + 1,
+                ],
+            ),
+            price,
+        )
+        st.latex(latex_expression)
 
     except ValidationError as e:
         st.error(f"输入数据无效: {e}")
