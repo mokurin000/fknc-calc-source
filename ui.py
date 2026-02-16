@@ -4,7 +4,7 @@ from functools import partial, reduce
 import streamlit as st
 from pypinyin import lazy_pinyin
 from fknc_calc import Mutation, load_data, calc_price, BASE_MUTATIONS, Plant
-from fknc_calc.rules import is_mutation_allowed
+from fknc_calc.rules import RECIPES, is_mutation_disabled
 from pydantic import ValidationError
 
 
@@ -180,25 +180,43 @@ def main():
 
     selectable_names = special + other_mutation_names
 
-    previously_selected: list = st.session_state.get("selected-mutations", [])
+    selected_mutations: set = st.session_state.get("selected-mutations", set())
 
     st.markdown("#### 突变词条")
-    selected_mutations = st.multiselect(
-        "其他突变",
-        list(
-            filter(
-                partial(
-                    is_mutation_allowed,
-                    previously_selected,
-                    selected_plant,
-                ),
-                selectable_names,
+
+    with st.container(horizontal=True):
+        for selectable_name in selectable_names:
+            key = f"checkbox-{selectable_name}"
+            old_state = st.session_state.get(key, None)
+
+            disabled = is_mutation_disabled(
+                selected_mutations,
+                plant=selected_plant,
+                new_mutation=selectable_name,
             )
-        ),
-        default=[],
-        key="selected-mutations",
-        format_func=display_name,
-    )
+            new_state = st.checkbox(
+                display_name(selectable_name),
+                disabled=disabled,
+                key=key,
+            )
+
+            if new_state:
+                selected_mutations.add(selectable_name)
+            else:
+                if selectable_name in selected_mutations:
+                    selected_mutations.remove(selectable_name)
+
+            if (
+                old_state is not None
+                and old_state != new_state
+                and any(
+                    map(lambda recipe: recipe["result"] == selectable_name, RECIPES)
+                )
+            ):
+                st.session_state["selected-mutations"] = selected_mutations
+                st.rerun()
+
+    st.session_state["selected-mutations"] = selected_mutations
 
     try:
         # 构建突变列表
