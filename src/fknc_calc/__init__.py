@@ -54,7 +54,7 @@ def calc_price(plant: Plant, weight: float, mutations: list[Mutation]) -> PriceR
     """
     if not isinstance(plant, Plant):
         raise TypeError("无效输入类型")
-    if weight > plant.max_weight or weight < 0.03 * plant.max_weight:
+    if weight > plant.max_weight:
         raise Exception("无效的作物重量！")
 
     base_factor = 1
