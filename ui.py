@@ -194,14 +194,24 @@ def main():
         )
         max_speed = selected_plant.growth_speed * selected_plant.max_weight / 100
 
+        label = f"生长速度 ({min_speed:.1f}~{selected_plant.growth_speed * selected_plant.max_weight / 100}s/%)"
+        st.markdown(
+            f"""
+    <span style='display: flex; justify-content: center;'>
+       {label}
+    </span>
+""",
+            unsafe_allow_html=True,
+        )
         secs_per_percent = st.number_input(
-            f"生长速度 ({min_speed:.1f}~{selected_plant.growth_speed * selected_plant.max_weight / 100}s/%)",
+            "生长速度",
             min_value=min_speed,
             max_value=max_speed,
             value=min_speed,
             step=0.01,
             format="%.2f",
             help="每百分比生长进度需要的秒数",
+            label_visibility="collapsed",
         )
         percent = secs_per_percent / max_speed
         weight = selected_plant.max_weight * percent
