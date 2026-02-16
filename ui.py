@@ -248,7 +248,7 @@ def main():
             selectable_names.remove(mutation)
             selectable_names.insert(0, mutation)
 
-    selectable_names = selectable_names[:count] + selectable_names[:count:-1]
+    selectable_names = selectable_names[:count] + selectable_names[: count - 1 : -1]
 
     # 处理剩下的顺序
     with st.container(horizontal=True):
