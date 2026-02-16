@@ -24,6 +24,7 @@ class Plant(BaseModel):
     price_coefficient: float
     max_weight: float
     growth_speed: float
+    """每秒增长的百分比/kg * 100"""
     type: Literal["普通", "月球"]
     special_mutations: tuple[str] | None = None
 

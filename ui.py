@@ -89,9 +89,7 @@ def main():
         )
 
         st.write(f"作物类型: {selected_plant.type}")
-        st.write(
-            "生长速度: " + (f"{selected_plant.growth_speed}".rstrip(".0") or "未知")
-        )
+        st.write("最大重量: " + f"{selected_plant.max_weight:.2f}".rstrip(".0") + " kg")
 
     speed_text = "按速度"
     weight_text = "按重量"
@@ -105,7 +103,7 @@ def main():
         == weight_text
     ):
         # 输入作物重量
-        min_weight = round(0.03 * selected_plant.max_weight, 2)
+        min_weight = round(selected_plant.max_weight / 34, 2)
         weight = st.number_input(
             f"作物重量 ({min_weight:.2f}~{selected_plant.max_weight} kg)",
             min_value=min_weight,
@@ -113,11 +111,9 @@ def main():
             value=min_weight,
             step=0.01,
         )
-        secs_per_percent = (
-            weight / selected_plant.max_weight * selected_plant.growth_speed
-        )
+        secs_per_percent = weight * selected_plant.growth_speed / 100
 
-        total_time = int(secs_per_percent * 100)
+        total_time = int(round(secs_per_percent * 100, 0))
 
         if total_time >= 3600:
             total_hours = total_time // 3600
@@ -138,20 +134,23 @@ def main():
         )
     else:
         # 输入生长速度
-        min_speed = round(0.03 * selected_plant.growth_speed, 1)
+        min_speed = round(
+            selected_plant.growth_speed * selected_plant.max_weight * 0.03 / 100, 1
+        )
+        max_speed = selected_plant.growth_speed * selected_plant.max_weight / 100
+
         secs_per_percent = st.number_input(
-            f"生长速度 ({min_speed:.1f}~{selected_plant.growth_speed}s/%)",
+            f"生长速度 ({min_speed:.1f}~{selected_plant.growth_speed * selected_plant.max_weight / 100}s/%)",
             min_value=min_speed,
-            max_value=selected_plant.growth_speed,
+            max_value=max_speed,
             value=min_speed,
-            step=0.1,
-            format="%.1f",
+            step=0.01,
+            format="%.2f",
+            help="每百分比生长进度需要的秒数",
         )
-        weight = round(
-            secs_per_percent / selected_plant.growth_speed * selected_plant.max_weight,
-            2,
-        )
-        st.write(f"重量: {weight:.2f} kg")
+        percent = secs_per_percent / max_speed
+        weight = selected_plant.max_weight * percent
+        st.write(f"重量: {weight:.2f} kg ({percent * 100:.1f}%)")
 
     # 获取选中的基础突变
     if selected_base_mutation_name != "无":
