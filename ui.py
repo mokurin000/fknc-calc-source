@@ -82,7 +82,7 @@ def main():
             base_mutation_names.remove("星空")
 
         selected_base_mutation_name = st.selectbox(
-            "",
+            "基础突变",
             ["无"] + base_mutation_names,
             format_func=display_name,
             label_visibility="collapsed",
@@ -97,7 +97,7 @@ def main():
     weight_text = "按重量"
     if (
         st.selectbox(
-            "",
+            "生长速度",
             [weight_text, speed_text],
             label_visibility="collapsed",
             help="速度为每多少秒长一百分比",
