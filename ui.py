@@ -185,11 +185,18 @@ def main():
 
     # workaround for recipes condition
     # note: RECIPES must stay the dependency order.
+    count = 0
     for recipe in RECIPES:
         mutation = recipe["result"]
         if mutation in selectable_names:
+            count += 1
+
             selectable_names.remove(mutation)
             selectable_names.insert(0, mutation)
+
+    selectable_names = selectable_names[:count] + selectable_names[:count:-1]
+
+    # 处理剩下的顺序
     with st.container(horizontal=True):
         for selectable_name in special + selectable_names:
             if selectable_name in MOON_ONLY and not selected_plant.type == "月球":
