@@ -8,6 +8,27 @@ from fknc_calc.rules import RECIPES, is_mutation_disabled, MOON_ONLY
 from pydantic import ValidationError
 
 
+def time_format(secs_per_percent: float) -> str:
+    total_time = int(round(secs_per_percent * 100, 0))
+
+    if total_time >= 3600:
+        total_hours = total_time // 3600
+        total_mins = (total_time % 3600) // 60
+    elif total_time >= 60:
+        total_hours = None
+        total_mins = total_time // 60
+    else:
+        total_hours = None
+        total_mins = None
+    total_secs = total_time % 60
+
+    return (
+        (f"{total_hours:02}时" if total_hours else "")
+        + (f"{total_mins:02}分" if total_mins else "")
+        + (f"{total_secs:02}秒" if total_secs else "")
+    ).lstrip("0")
+
+
 def compute_all_special_mutations(plants: list[Plant]) -> set[str]:
     return {
         name
@@ -163,24 +184,8 @@ def main():
         if not disable_speed:
             secs_per_percent = weight * selected_plant.growth_speed / 100
 
-            total_time = int(round(secs_per_percent * 100, 0))
-
-            if total_time >= 3600:
-                total_hours = total_time // 3600
-                total_mins = (total_time % 3600) // 60
-            elif total_time >= 60:
-                total_hours = None
-                total_mins = total_time // 60
-            else:
-                total_hours = None
-                total_mins = None
-            total_secs = total_time % 60
-
             st.write(
-                f"速度: {secs_per_percent:.1f}s/%, 共需时间",
-                (f"{total_hours}时" if total_hours else "")
-                + (f"{total_mins}分" if total_mins else "")
-                + (f"{total_secs}秒" if total_secs else ""),
+                f"速度：{secs_per_percent:.1f} 秒/%，生长时间：{time_format(secs_per_percent)}",
             )
     else:
         # 输入生长速度
@@ -200,7 +205,7 @@ def main():
         )
         percent = secs_per_percent / max_speed
         weight = selected_plant.max_weight * percent
-        st.write(f"重量: {weight:.2f} kg ({percent * 100:.1f}%)")
+        st.write(f"重量：{weight:.2f} kg，生长时间：{time_format(secs_per_percent)}")
 
     # 获取选中的基础突变
     if selected_base_mutation_name != "无":
