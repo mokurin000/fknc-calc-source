@@ -40,6 +40,48 @@ def display_name_of_mutation(
         return f"+{num_fmt} {name}"
 
 
+def input_weight_slider_input(
+    min_weight: float,
+    max_weight: float,
+) -> float:
+    slider_key = "weight-slider"
+    number_key = "weight-number-input"
+
+    st.markdown(
+        f"<span style='display: flex; justify-content: center;'>作物重量 ({min_weight:.2f}~{max_weight} kg)</span>",
+        unsafe_allow_html=True,
+    )
+    col1, col2 = st.columns([7, 2])
+    with col1:
+        st.slider(
+            "作物重量",
+            min_value=min_weight,
+            max_value=max_weight,
+            value=min_weight,
+            step=0.01,
+            key=slider_key,
+            on_change=lambda: st.session_state.update(
+                {number_key: st.session_state[slider_key]}
+            ),
+            label_visibility="collapsed",
+        )
+    with col2:
+        weight = st.number_input(
+            "作物重量",
+            min_value=min_weight,
+            max_value=max_weight,
+            value=min_weight,
+            step=0.01,
+            key=number_key,
+            on_change=lambda: st.session_state.update(
+                {slider_key: st.session_state[number_key]}
+            ),
+            label_visibility="collapsed",
+            width="stretch",
+        )
+        return weight
+
+
 def main():
     # 加载植物和突变数据
     if "loaded-data" in st.session_state:
@@ -64,7 +106,15 @@ def main():
     base_mutation_names = BASE_MUTATIONS[:]
 
     # 显示植物详细信息
-    st.markdown("#### 作物信息")
+
+    st.markdown(
+        """
+    <span style='display: flex; justify-content: center;'>
+       <h4>作物信息</h4>
+    </span>
+""",
+        unsafe_allow_html=True,
+    )
     with st.container(horizontal=True):
         # 提供作物选择
         plant_names = [
@@ -89,7 +139,6 @@ def main():
         )
 
         st.write(f"作物类型: {selected_plant.type}")
-        st.write("最大重量: " + f"{selected_plant.max_weight:.2f}".rstrip(".0") + " kg")
 
     speed_text = "按速度"
     weight_text = "按重量"
@@ -104,13 +153,11 @@ def main():
     ):
         # 输入作物重量
         min_weight = round(selected_plant.max_weight / 34, 2)
-        weight = st.number_input(
-            f"作物重量 ({min_weight:.2f}~{selected_plant.max_weight} kg)",
-            min_value=min_weight,
-            max_value=selected_plant.max_weight,
-            value=min_weight,
-            step=0.01,
+        weight = input_weight_slider_input(
+            min_weight,
+            max_weight=selected_plant.max_weight,
         )
+
         secs_per_percent = weight * selected_plant.growth_speed / 100
 
         total_time = int(round(secs_per_percent * 100, 0))
@@ -179,7 +226,14 @@ def main():
 
     selectable_names = other_mutation_names
 
-    st.markdown("#### 突变词条")
+    st.markdown(
+        """
+    <span style='display: flex; justify-content: center;'>
+       <h4>突变词条</h4>
+    </span>
+""",
+        unsafe_allow_html=True,
+    )
 
     selected_mutations: set = st.session_state.get("selected-mutations", set())
 
