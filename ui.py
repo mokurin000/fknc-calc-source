@@ -4,7 +4,7 @@ from functools import partial, reduce
 import streamlit as st
 from pypinyin import lazy_pinyin
 from fknc_calc import Mutation, load_data, calc_price, BASE_MUTATIONS, Plant
-from fknc_calc.rules import RECIPES, is_mutation_disabled
+from fknc_calc.rules import RECIPES, is_mutation_disabled, MOON_ONLY
 from pydantic import ValidationError
 
 
@@ -178,17 +178,23 @@ def main():
         else []
     )
 
-    selectable_names = special + other_mutation_names
-
-    selected_mutations: set = st.session_state.get("selected-mutations", set())
+    selectable_names = other_mutation_names
 
     st.markdown("#### 突变词条")
 
-    with st.container(horizontal=True):
-        for selectable_name in selectable_names:
-            key = f"checkbox-{selectable_name}"
-            old_state = st.session_state.get(key, None)
+    selected_mutations: set = st.session_state.get("selected-mutations", set())
 
+    # workaround for recipes condition
+    # note: RECIPES must stay the dependency order.
+    for recipe in RECIPES:
+        mutation = recipe["result"]
+        if mutation in selectable_names:
+            selectable_names.remove(mutation)
+            selectable_names.insert(0, mutation)
+    with st.container(horizontal=True):
+        for selectable_name in special + selectable_names:
+            if selectable_name in MOON_ONLY and not selected_plant.type == "月球":
+                continue
             disabled = is_mutation_disabled(
                 selected_mutations,
                 plant=selected_plant,
@@ -197,24 +203,13 @@ def main():
             new_state = st.checkbox(
                 display_name(selectable_name),
                 disabled=disabled,
-                key=key,
             )
 
-            if new_state:
+            if new_state and not disabled:
                 selected_mutations.add(selectable_name)
             else:
                 if selectable_name in selected_mutations:
                     selected_mutations.remove(selectable_name)
-
-            if (
-                old_state is not None
-                and old_state != new_state
-                and any(
-                    map(lambda recipe: recipe["result"] == selectable_name, RECIPES)
-                )
-            ):
-                st.session_state["selected-mutations"] = selected_mutations
-                st.rerun()
 
     st.session_state["selected-mutations"] = selected_mutations
 
