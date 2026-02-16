@@ -1,7 +1,9 @@
 from functools import partial, reduce
 
+
 import streamlit as st
-from fknc_calc import load_data, calc_price, BASE_MUTATIONS, Plant
+from pypinyin import lazy_pinyin
+from fknc_calc import Mutation, load_data, calc_price, BASE_MUTATIONS, Plant
 from fknc_calc.rules import is_mutation_allowed
 from pydantic import ValidationError
 
@@ -15,6 +17,29 @@ def compute_all_special_mutations(plants: list[Plant]) -> set[str]:
     }
 
 
+def display_name_of_mutation(
+    specials: set[str],
+    mutations: list[Mutation],
+    name: str,
+):
+    try:
+        mutation = next(mutation for mutation in mutations if mutation.name == name)
+    except StopIteration:
+        if name == "无":
+            return "x1 无"
+        return name
+
+    factor = mutation.multiplier
+    if factor == int(factor):
+        num_fmt = f"{factor:.0f}"
+    else:
+        num_fmt = f"{factor:.1f}"
+    if name in specials or name in BASE_MUTATIONS:
+        return f"x{num_fmt} {name}"
+    else:
+        return f"+{num_fmt} {name}"
+
+
 def main():
     # 加载植物和突变数据
     if "loaded-data" in st.session_state:
@@ -26,58 +51,62 @@ def main():
     # 筛选特殊突变
     ALL_SPECIAL_MUTATIONS = compute_all_special_mutations(plants)
 
-    # 提供作物选择
-    plant_names = [plant.name for plant in plants]
-    plant_name = st.selectbox("选择作物", plant_names)
-
-    # 获取选择的植物对象
-    selected_plant = next(plant for plant in plants if plant.name == plant_name)
-
-    # 显示植物详细信息
-    with st.container(horizontal=True):
-        st.write(f"作物类型: {selected_plant.type}")
-        st.write(f"生长速度: {selected_plant.growth_speed}")
+    display_name = partial(
+        display_name_of_mutation,
+        ALL_SPECIAL_MUTATIONS,
+        mutations,
+    )
 
     # 基础突变选择
     base_mutations = [
         mutation for mutation in mutations if mutation.name in BASE_MUTATIONS
     ]
     base_mutation_names = BASE_MUTATIONS[:]
-    if selected_plant.type != "月球":
-        base_mutation_names.remove("星空")
-    selected_base_mutation_name = st.selectbox(
-        "选择基础突变",
-        ["无"] + base_mutation_names,
+
+    # 显示植物详细信息
+    st.markdown("#### 作物信息")
+    with st.container(horizontal=True):
+        # 提供作物选择
+        plant_names = [
+            p.name
+            for p in sorted(
+                (plant for plant in plants),
+                key=lambda p: lazy_pinyin(p.name),
+            )
+        ]
+        plant_name = st.selectbox("选择作物", plant_names, label_visibility="collapsed")
+
+        # 获取选择的植物对象
+        selected_plant = next(plant for plant in plants if plant.name == plant_name)
+        if selected_plant.type != "月球":
+            base_mutation_names.remove("星空")
+
+        selected_base_mutation_name = st.selectbox(
+            "",
+            ["无"] + base_mutation_names,
+            format_func=display_name,
+            label_visibility="collapsed",
+        )
+
+        st.write(f"作物类型: {selected_plant.type}")
+        st.write(
+            "生长速度: " + (f"{selected_plant.growth_speed}".rstrip(".0") or "未知")
+        )
+
+    # 输入作物重量
+    weight = st.number_input(
+        f"作物重量 (最大: {selected_plant.max_weight}kg)",
+        min_value=0.03 * selected_plant.max_weight,
+        max_value=selected_plant.max_weight,
+        value=0.03 * selected_plant.max_weight,
     )
 
+    # 获取选中的基础突变
     if selected_base_mutation_name != "无":
-        # 获取选中的基础突变
         selected_base_mutation = next(
             mutation
             for mutation in base_mutations
             if mutation.name == selected_base_mutation_name
-        )
-
-        # 设置颜色映射
-        color_map = {
-            "灰色": "#808080",
-            "绿色": "#18FC18",
-            "蓝色": "#00FFFF",
-            "金色": "#FFD700",
-            "彩色": "#FF4D2E",  # 选择一个颜色，这里使用了番茄色
-            "紫色": "#800080",
-        }
-
-        # 获取颜色
-        color_code = color_map.get(
-            selected_base_mutation.color, "#000000"
-        )  # 默认为黑色
-
-        # 使用 HTML 设置颜色
-        st.write(
-            f'选择的基础突变: <span style="color:{color_code}">{selected_base_mutation.name}</span>,'
-            f" 乘数: {selected_base_mutation.multiplier}",
-            unsafe_allow_html=True,
         )
     else:
         selected_base_mutation = None
@@ -101,8 +130,9 @@ def main():
 
     previously_selected: list = st.session_state.get("selected-mutations", [])
 
+    st.markdown("#### 突变词条")
     selected_mutations = st.multiselect(
-        "选择其他突变 (可多选)",
+        "其他突变",
         list(
             filter(
                 partial(
@@ -115,14 +145,7 @@ def main():
         ),
         default=[],
         key="selected-mutations",
-    )
-
-    # 输入作物重量
-    weight = st.number_input(
-        f"输入作物重量 (最大: {selected_plant.max_weight}kg)",
-        min_value=0.03 * selected_plant.max_weight,
-        max_value=selected_plant.max_weight,
-        value=0.03 * selected_plant.max_weight,
+        format_func=display_name,
     )
 
     try:
@@ -136,21 +159,13 @@ def main():
 
         # 计算价格
         price_result = calc_price(selected_plant, weight, mutations_to_apply)
-
-        # 显示计算结果
-        st.write(f"基础因数: {price_result.base_factor}")
-        st.write(f"重量因数: {price_result.weight_factor:.4f}")
-        st.write(f"特殊因数: {price_result.special_factor}")
-        st.write(f"突变因数: {price_result.mutate_factor}")
-
         price = price_result.total_price
-
         if price < 1e4:
-            st.write(f"总价格: {price:.0f}")
+            price_pretty = None
         elif price < 1e8:
-            st.write(f"总价格: {price / 1e4:.4f} 万")
+            price_pretty = f"{price / 1e4:.2f}".rstrip("0") + " 万"
         else:
-            st.write(f"总价格: {price / 1e8:.4f} 亿")
+            price_pretty = f"{price / 1e8:.2f}".rstrip("0") + "亿"
 
         st.markdown(
             """<style>
@@ -165,7 +180,7 @@ span.katex {
         \text{总价格} \\
 
         = \text{作物基价} \times \text{重量因数} \times
-        \text{基础突变} \times \text{特殊突变} \times \left(1 + \text{常规突变}\right) \\
+        \text{基础突变} \times \text{专属突变} \times \left(1 + \text{常规突变}\right) \\
 
         = \left( \text{%.4f} \times \text{%.2f}^{1.5} \right) \times \left(
         \text{%.1f} \times \text{%.1f} \times \text{%.1f} \right) \\
@@ -190,6 +205,10 @@ span.katex {
             ),
             price,
         )
+        if price_pretty is not None:
+            latex_expression += r""" \\
+        \approx %s""" % (price_pretty,)
+
         st.latex(latex_expression)
 
     except ValidationError as e:
