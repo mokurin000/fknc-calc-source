@@ -15,6 +15,71 @@ from fknc_calc.rules import RECIPES, is_mutation_disabled, MOON_ONLY
 from pydantic import ValidationError
 
 
+def show_calculation(
+    base_mutation: Mutation | None,
+    mutations: list[str],
+    mutations_map: dict[str, Mutation],
+    crop: Plant,
+    weight: float,
+):
+    # 构建突变列表
+    mutations_to_apply = [mutations_map[name] for name in mutations]
+
+    if base_mutation is not None:
+        mutations_to_apply.append(base_mutation)
+
+    # 计算价格
+    price_result = calc_price(crop, weight, mutations_to_apply)
+    price = price_result.total_price
+    if price < 1e4:
+        price_pretty = None
+    elif price < 1e8:
+        price_pretty = f"{price / 1e4:.2f}".rstrip(".0") + " 万"
+    else:
+        price_pretty = f"{price / 1e8:.2f}".rstrip(".0") + "亿"
+
+    st.markdown(
+        """<style>
+span.katex {
+text-align: left !important;
+}
+</style>""",
+        unsafe_allow_html=True,
+    )
+
+    # 除天气突变以外的因数之积
+    mid_factor = (
+        price_result.weight_factor
+        * price_result.base_factor
+        * price_result.special_factor
+    )
+    latex_expression = rf"""
+    \text{{总价格}} \\
+
+    = \text{{作物基价}} \times \text{{重量因数}} \times
+    \text{{基础突变}} \times \text{{专属突变}} \times \left(1 + \text{{常规突变}}\right) \\
+
+    = \left( \text{crop.price_coefficient:.4f} \times
+    \left( \text{weight:.2f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
+    \text{price_result.special_factor:.1f} \right) \right) \times
+    \text{price_result.mutate_factor + 1:.1f} \\
+
+    = \left( \text{crop.price_coefficient:.4f} \times
+    \text{mid_factor:.4f} \right) \times
+    \text{(price_result.mutate_factor + 1):.1f} \\
+
+    = \text{crop.price_coefficient * mid_factor:.4f} \times
+    \text{(price_result.mutate_factor + 1):.1f} \\
+
+    = \text{price:.0f}
+    """
+    if price_pretty is not None:
+        latex_expression += r""" \\
+    \approx %s""" % (price_pretty,)
+
+    st.latex(latex_expression)
+
+
 def time_format(secs_per_percent: float) -> str:
     total_time = int(round(secs_per_percent * 100, 0))
 
@@ -308,62 +373,13 @@ def main():
     st.session_state["selected-mutations"] = selected_mutations
 
     try:
-        # 构建突变列表
-        mutations_to_apply = [mutations_map[name] for name in selected_mutations]
-
-        if selected_base_mutation is not None:
-            mutations_to_apply.append(selected_base_mutation)
-
-        # 计算价格
-        price_result = calc_price(selected_plant, weight, mutations_to_apply)
-        price = price_result.total_price
-        if price < 1e4:
-            price_pretty = None
-        elif price < 1e8:
-            price_pretty = f"{price / 1e4:.2f}".rstrip(".0") + " 万"
-        else:
-            price_pretty = f"{price / 1e8:.2f}".rstrip(".0") + "亿"
-
-        st.markdown(
-            """<style>
-span.katex {
-    text-align: left !important;
-}
-</style>""",
-            unsafe_allow_html=True,
+        show_calculation(
+            base_mutation=selected_base_mutation,
+            mutations=selected_mutations,
+            mutations_map=mutations_map,
+            crop=selected_plant,
+            weight=weight,
         )
-
-        # 除天气突变以外的因数之积
-        mid_factor = (
-            price_result.weight_factor
-            * price_result.base_factor
-            * price_result.special_factor
-        )
-        latex_expression = rf"""
-        \text{{总价格}} \\
-
-        = \text{{作物基价}} \times \text{{重量因数}} \times
-        \text{{基础突变}} \times \text{{专属突变}} \times \left(1 + \text{{常规突变}}\right) \\
-
-        = \left( \text{selected_plant.price_coefficient:.4f} \times
-        \left( \text{weight:.2f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
-        \text{price_result.special_factor:.1f} \right) \right) \times
-        \text{price_result.mutate_factor + 1:.1f} \\
-
-        = \left( \text{selected_plant.price_coefficient:.4f} \times
-        \text{mid_factor:.4f} \right) \times
-        \text{(price_result.mutate_factor + 1):.1f} \\
-
-        = \text{selected_plant.price_coefficient * mid_factor:.4f} \times
-        \text{(price_result.mutate_factor + 1):.1f} \\
-
-        = \text{price:.0f}
-        """
-        if price_pretty is not None:
-            latex_expression += r""" \\
-        \approx %s""" % (price_pretty,)
-
-        st.latex(latex_expression)
 
     except ValidationError as e:
         st.error(f"输入数据无效: {e}")
