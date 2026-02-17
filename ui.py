@@ -1,4 +1,4 @@
-from functools import partial, reduce
+from functools import partial
 from collections import defaultdict
 
 import streamlit as st
@@ -67,9 +67,14 @@ def display_name_of_mutation(
 def input_weight_slider_input(
     min_weight: float,
     max_weight: float,
+    plant_name: str,
 ) -> float:
-    slider_key = "weight-slider"
-    number_key = "weight-number-input"
+    default_value = max_weight * 0.05
+
+    slider_key = f"weight-{plant_name}-slider"
+    number_key = f"weight-{plant_name}-number-input"
+    st.session_state[slider_key] = st.session_state.get(slider_key, default_value)
+    st.session_state[number_key] = st.session_state.get(number_key, default_value)
 
     st.markdown(
         f"<span style='display: flex; justify-content: center;'>作物重量 ({min_weight:.2f}~{max_weight} kg)</span>",
@@ -81,7 +86,6 @@ def input_weight_slider_input(
             "作物重量",
             min_value=min_weight,
             max_value=max_weight,
-            value=min_weight,
             step=0.01,
             key=slider_key,
             on_change=lambda: st.session_state.update(
@@ -94,7 +98,6 @@ def input_weight_slider_input(
             "作物重量",
             min_value=min_weight,
             max_value=max_weight,
-            value=min_weight,
             step=0.01,
             key=number_key,
             on_change=lambda: st.session_state.update(
@@ -179,6 +182,7 @@ def main():
         weight = input_weight_slider_input(
             min_weight,
             max_weight=selected_plant.max_weight,
+            plant_name=selected_plant.name,
         )
 
         if not disable_speed:
@@ -327,35 +331,32 @@ span.katex {
             unsafe_allow_html=True,
         )
 
-        latex_expression = r"""
-        \text{总价格} \\
-
-        = \text{作物基价} \times \text{重量因数} \times
-        \text{基础突变} \times \text{专属突变} \times \left(1 + \text{常规突变}\right) \\
-
-        = \left( \text{%.4f} \times \text{%.2f}^{1.5} \right) \times \left(
-        \text{%.1f} \times \text{%.1f} \times \text{%.1f} \right) \\
-
-        = \text{%.4f} \times \text{%.1f} \\
-
-        = \text{%.0f}
-        """ % (
-            selected_plant.price_coefficient,
-            weight,
-            price_result.base_factor,
-            price_result.special_factor,
-            price_result.mutate_factor + 1,
-            selected_plant.price_coefficient * price_result.weight_factor,
-            reduce(
-                lambda a, b: a * b,
-                [
-                    price_result.base_factor,
-                    price_result.special_factor,
-                    price_result.mutate_factor + 1,
-                ],
-            ),
-            price,
+        # 除天气突变以外的因数之积
+        mid_factor = (
+            price_result.weight_factor
+            * price_result.base_factor
+            * price_result.special_factor
         )
+        latex_expression = rf"""
+        \text{{总价格}} \\
+
+        = \text{{作物基价}} \times \text{{重量因数}} \times
+        \text{{基础突变}} \times \text{{专属突变}} \times \left(1 + \text{{常规突变}}\right) \\
+
+        = \left( \text{selected_plant.price_coefficient:.4f} \times
+        \left( \text{weight:.2f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
+        \text{price_result.special_factor:.1f} \right) \right) \times
+        \text{price_result.mutate_factor + 1:.1f} \\
+
+        = \left( \text{selected_plant.price_coefficient:.4f} \times
+        \text{mid_factor:.4f} \right) \times
+        \text{(price_result.mutate_factor + 1):.1f} \\
+
+        = \text{selected_plant.price_coefficient * mid_factor:.4f} \times
+        \text{(price_result.mutate_factor + 1):.1f} \\
+
+        = \text{price:.0f}
+        """
         if price_pretty is not None:
             latex_expression += r""" \\
         \approx %s""" % (price_pretty,)
