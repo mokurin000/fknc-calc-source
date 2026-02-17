@@ -255,16 +255,28 @@ def main():
 """,
         unsafe_allow_html=True,
     )
-    with st.container(horizontal=True):
+    col1, col2 = st.columns([1, 1])
+    with col1, st.container(horizontal=True):
+        col_1, col_2 = st.columns([2, 3])
+
+        plant_types = Plant.model_fields["type"].annotation.__args__
+        with col_1:
+            plant_type = st.selectbox(
+                "选择类型", plant_types, label_visibility="collapsed"
+            )
+
         # 提供作物选择
         plant_names = [
             p.name
             for p in sorted(
-                (plant for plant in plants),
+                (plant for plant in plants if plant.type == plant_type),
                 key=lambda p: lazy_pinyin(p.name),
             )
         ]
-        plant_name = st.selectbox("选择作物", plant_names, label_visibility="collapsed")
+        with col_2:
+            plant_name = st.selectbox(
+                "选择作物", plant_names, label_visibility="collapsed"
+            )
 
         # 获取选择的植物对象
         selected_plant = next(plant for plant in plants if plant.name == plant_name)
@@ -275,6 +287,7 @@ def main():
             width=48,
         )
 
+    with col2, st.container(horizontal=True):
         st.write(
             f"""类型: {selected_plant.type}<br>
 重量: {selected_plant.max_weight / 34:.2f}~{selected_plant.max_weight:.2f} kg""",
