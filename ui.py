@@ -15,6 +15,80 @@ from fknc_calc.rules import RECIPES, is_mutation_disabled, MOON_ONLY
 from pydantic import ValidationError
 
 
+def input_by_weight(selected_plant: Plant) -> float:
+    # 输入作物重量
+    min_weight = round(selected_plant.max_weight / 34, 2)
+    weight = num_slider_input(
+        min_value=min_weight,
+        max_value=selected_plant.max_weight,
+        plant_name=selected_plant.name,
+    )
+
+    if selected_plant.growth_speed:
+        secs_per_percent = weight * selected_plant.growth_speed / 100
+
+        st.write(
+            f"速度：{secs_per_percent:.1f} 秒/%，生长时间：{time_format(secs_per_percent)}",
+        )
+
+    return weight
+
+
+def input_by_percent(selected_plant: Plant) -> float:
+    percent = num_slider_input(
+        min_value=3.0,
+        max_value=100.0,
+        plant_name=selected_plant.name,
+        step=0.1,
+        key_type="percent",
+        a11y_label="重量百分比",
+        unit="%",
+        format="%.1f",
+    )
+    weight = round(percent * selected_plant.max_weight / 100, 2)
+
+    if selected_plant.growth_speed:
+        secs_per_percent = weight * selected_plant.growth_speed / 100
+
+        st.write(
+            f"速度：{secs_per_percent:.1f} 秒/%，生长时间：{time_format(secs_per_percent)}",
+        )
+
+    return weight
+
+
+def input_by_speed(selected_plant: Plant) -> float:
+    # 输入生长速度
+    min_speed = round(
+        selected_plant.growth_speed * selected_plant.max_weight * 0.03 / 100, 1
+    )
+    max_speed = round(selected_plant.growth_speed * selected_plant.max_weight / 100, 2)
+
+    label = f"生长速度 ({min_speed:.1f}~{max_speed:.2f}s/%)"
+    st.markdown(
+        f"""
+<span style='display: flex; justify-content: center;'>
+    {label}
+</span>
+""",
+        unsafe_allow_html=True,
+    )
+    secs_per_percent = st.number_input(
+        "生长速度",
+        min_value=min_speed,
+        max_value=max_speed,
+        value=min_speed,
+        step=0.01,
+        format="%.2f",
+        help="每百分比生长进度需要的秒数",
+        label_visibility="collapsed",
+    )
+    percent = secs_per_percent / max_speed
+    weight = selected_plant.max_weight * percent
+    st.write(f"重量：{weight:.2f} kg，生长时间：{time_format(secs_per_percent)}")
+    return weight
+
+
 def show_calculation(
     base_mutation: Mutation | None,
     mutations: list[str],
@@ -129,45 +203,52 @@ def display_name_of_mutation(
         return f"+{num_fmt} {name}"
 
 
-def input_weight_slider_input(
-    min_weight: float,
-    max_weight: float,
+def num_slider_input(
+    min_value: float,
+    max_value: float,
     plant_name: str,
+    key_type: str = "weight",
+    a11y_label: str = "作物重量",
+    unit: str = "kg",
+    step: float = 0.01,
+    format: str = "%.2f",
 ) -> float:
-    default_value = max_weight * 0.05
+    default_value = max_value * 0.05
 
-    slider_key = f"weight-{plant_name}-slider"
-    number_key = f"weight-{plant_name}-number-input"
+    slider_key = f"{key_type}-{plant_name}-slider"
+    number_key = f"{key_type}-{plant_name}-number-input"
     st.session_state[slider_key] = st.session_state.get(slider_key, default_value)
     st.session_state[number_key] = st.session_state.get(number_key, default_value)
 
     st.markdown(
-        f"<span style='display: flex; justify-content: center;'>作物重量 ({min_weight:.2f}~{max_weight} kg)</span>",
+        f"<span style='display: flex; justify-content: center;'>{a11y_label} ({min_value:.2f}~{max_value:.2f} {unit})</span>",
         unsafe_allow_html=True,
     )
     col1, col2 = st.columns([7, 2])
     with col1:
         st.slider(
-            "作物重量",
-            min_value=min_weight,
-            max_value=max_weight,
-            step=0.01,
+            a11y_label,
+            min_value=min_value,
+            max_value=max_value,
+            step=step,
             key=slider_key,
             on_change=lambda: st.session_state.update(
                 {number_key: st.session_state[slider_key]}
             ),
+            format=format,
             label_visibility="collapsed",
         )
     with col2:
         weight = st.number_input(
-            "作物重量",
-            min_value=min_weight,
-            max_value=max_weight,
-            step=0.01,
+            a11y_label,
+            min_value=min_value,
+            max_value=max_value,
+            step=step,
             key=number_key,
             on_change=lambda: st.session_state.update(
                 {slider_key: st.session_state[number_key]}
             ),
+            format=format,
             label_visibility="collapsed",
             width="stretch",
         )
@@ -229,64 +310,25 @@ def main():
 
         st.write(f"作物类型: {selected_plant.type}")
 
-    speed_text = "按速度"
-    weight_text = "按重量"
+    speed_text = "速度"
+    weight_text = "重量"
+    percent_text = "百分比"
+
     disable_speed = selected_plant.growth_speed == 0
-    if (
-        st.selectbox(
-            "生长速度",
-            [weight_text, speed_text],
-            label_visibility="collapsed",
-            help="速度为每多少秒长一百分比",
-            disabled=disable_speed,
-        )
-        == weight_text
-    ):
-        # 输入作物重量
-        min_weight = round(selected_plant.max_weight / 34, 2)
-        weight = input_weight_slider_input(
-            min_weight,
-            max_weight=selected_plant.max_weight,
-            plant_name=selected_plant.name,
-        )
-
-        if not disable_speed:
-            secs_per_percent = weight * selected_plant.growth_speed / 100
-
-            st.write(
-                f"速度：{secs_per_percent:.1f} 秒/%，生长时间：{time_format(secs_per_percent)}",
-            )
-    else:
-        # 输入生长速度
-        min_speed = round(
-            selected_plant.growth_speed * selected_plant.max_weight * 0.03 / 100, 1
-        )
-        max_speed = round(
-            selected_plant.growth_speed * selected_plant.max_weight / 100, 2
-        )
-
-        label = f"生长速度 ({min_speed:.1f}~{max_speed:.2f}s/%)"
-        st.markdown(
-            f"""
-    <span style='display: flex; justify-content: center;'>
-       {label}
-    </span>
-""",
-            unsafe_allow_html=True,
-        )
-        secs_per_percent = st.number_input(
-            "生长速度",
-            min_value=min_speed,
-            max_value=max_speed,
-            value=min_speed,
-            step=0.01,
-            format="%.2f",
-            help="每百分比生长进度需要的秒数",
-            label_visibility="collapsed",
-        )
-        percent = secs_per_percent / max_speed
-        weight = selected_plant.max_weight * percent
-        st.write(f"重量：{weight:.2f} kg，生长时间：{time_format(secs_per_percent)}")
+    input_approach = st.selectbox(
+        "输入方式",
+        [weight_text, percent_text]
+        if disable_speed
+        else [weight_text, speed_text, percent_text],
+        label_visibility="collapsed",
+        help="输入数据的方式",
+    )
+    if input_approach == weight_text:
+        weight = input_by_weight(selected_plant)
+    elif input_approach == speed_text:
+        weight = input_by_speed(selected_plant)
+    elif input_approach == percent_text:
+        weight = input_by_percent(selected_plant)
 
     # 获取选中的基础突变
     if selected_base_mutation_name != "无":
