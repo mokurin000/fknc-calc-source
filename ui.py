@@ -56,7 +56,7 @@ def input_by_speed(selected_plant: Plant) -> float:
         plant_name=selected_plant.name,
         key_type="speed",
         a11y_label="生长速度",
-        unit="s/%",
+        unit="秒/%",
     )
     percent = secs_per_percent / max_speed
     weight = round(selected_plant.max_weight * percent, 2)
@@ -195,7 +195,7 @@ def num_slider_input(
     st.session_state[slider_key] = current
     st.session_state[number_key] = current
 
-    col1, col2 = st.columns([7, 2])
+    col1, col2, col3 = st.columns([7, 2, 1])
     with col1:
         st.slider(
             a11y_label,
@@ -210,7 +210,7 @@ def num_slider_input(
             label_visibility="collapsed",
         )
     with col2:
-        weight = st.number_input(
+        value = st.number_input(
             a11y_label,
             min_value=min_value,
             max_value=max_value,
@@ -223,7 +223,10 @@ def num_slider_input(
             label_visibility="collapsed",
             width="stretch",
         )
-        return weight
+    with col3:
+        st.write(unit)
+
+    return value
 
 
 def basic_info_panel(
