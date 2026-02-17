@@ -397,8 +397,6 @@ def main():
         unsafe_allow_html=True,
     )
 
-    selected_mutations: set[str] = st.session_state.get("selected-mutations", set())
-
     # workaround for recipes condition
     # note: RECIPES must stay the dependency order.
     count = 0
@@ -414,6 +412,10 @@ def main():
 
     # 处理剩下的顺序
     selectables = special + selectable_names
+
+    selected_mutations: set[str] = st.session_state.get(
+        f"selected-mutations-{selected_plant.type}", set()
+    )
 
     cols_len = 5
     cols = st.columns([1] * cols_len)
@@ -443,7 +445,7 @@ def main():
                     if mutation_name in selected_mutations:
                         selected_mutations.remove(mutation_name)
 
-    st.session_state["selected-mutations"] = selected_mutations
+    st.session_state[f"selected-mutations-{selected_plant.type}"] = selected_mutations
 
     try:
         show_calculation(
