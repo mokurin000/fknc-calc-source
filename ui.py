@@ -1,5 +1,5 @@
 from functools import partial, reduce
-
+from collections import defaultdict
 
 import streamlit as st
 from pypinyin import lazy_pinyin
@@ -239,6 +239,10 @@ def main():
     )
 
     selectable_names = other_mutation_names
+    if selected_plant.type != "月球":
+        for name in MOON_ONLY:
+            if name in selectable_names:
+                selectable_names.remove(name)
 
     st.markdown(
         """
@@ -265,25 +269,35 @@ def main():
     selectable_names = selectable_names[:count] + selectable_names[: count - 1 : -1]
 
     # 处理剩下的顺序
-    with st.container(horizontal=True):
-        for selectable_name in special + selectable_names:
-            if selectable_name in MOON_ONLY and not selected_plant.type == "月球":
-                continue
-            disabled = is_mutation_disabled(
-                selected_mutations,
-                plant=selected_plant,
-                new_mutation=selectable_name,
-            )
-            new_state = st.checkbox(
-                display_name(selectable_name),
-                disabled=disabled,
-            )
+    selectables = special + selectable_names
 
-            if new_state and not disabled:
-                selected_mutations.add(selectable_name)
-            else:
-                if selectable_name in selected_mutations:
-                    selected_mutations.remove(selectable_name)
+    cols_len = 5
+    cols = st.columns([1] * cols_len)
+    col_items: dict[int, list[str]] = defaultdict(list)
+
+    for i, mutation_name in enumerate(selectables):
+        col_items[i % cols_len].append(mutation_name)
+
+    for i, items in col_items.items():
+        with cols[i]:
+            for mutation_name in items:
+                disabled = is_mutation_disabled(
+                    selected_mutations,
+                    plant=selected_plant,
+                    new_mutation=mutation_name,
+                )
+
+                fmt_name = display_name(mutation_name)
+                new_state = st.checkbox(
+                    fmt_name,
+                    disabled=disabled,
+                )
+
+                if new_state and not disabled:
+                    selected_mutations.add(mutation_name)
+                else:
+                    if mutation_name in selected_mutations:
+                        selected_mutations.remove(mutation_name)
 
     st.session_state["selected-mutations"] = selected_mutations
 
