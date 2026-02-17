@@ -3,7 +3,14 @@ from functools import partial, reduce
 
 import streamlit as st
 from pypinyin import lazy_pinyin
-from fknc_calc import Mutation, load_data, calc_price, BASE_MUTATIONS, Plant
+from fknc_calc import (
+    Mutation,
+    load_data,
+    calc_price,
+    BASE_MUTATIONS,
+    Plant,
+    mutation_name_map,
+)
 from fknc_calc.rules import RECIPES, is_mutation_disabled, MOON_ONLY
 from pydantic import ValidationError
 
@@ -106,10 +113,11 @@ def input_weight_slider_input(
 def main():
     # 加载植物和突变数据
     if "loaded-data" in st.session_state:
-        plants, mutations = st.session_state["loaded-data"]
+        plants, mutations, mutations_map = st.session_state["loaded-data"]
     else:
         plants, mutations = load_data()
-        st.session_state["loaded-data"] = (plants, mutations)
+        mutations_map: dict[str, Mutation] = mutation_name_map(mutations)
+        st.session_state["loaded-data"] = (plants, mutations, mutations_map)
 
     # 筛选特殊突变
     ALL_SPECIAL_MUTATIONS = compute_all_special_mutations(plants)
@@ -120,10 +128,6 @@ def main():
         mutations,
     )
 
-    # 基础突变选择
-    base_mutations = [
-        mutation for mutation in mutations if mutation.name in BASE_MUTATIONS
-    ]
     base_mutation_names = BASE_MUTATIONS[:]
 
     # 显示植物详细信息
@@ -219,11 +223,7 @@ def main():
 
     # 获取选中的基础突变
     if selected_base_mutation_name != "无":
-        selected_base_mutation = next(
-            mutation
-            for mutation in base_mutations
-            if mutation.name == selected_base_mutation_name
-        )
+        selected_base_mutation = mutations_map[selected_base_mutation_name]
     else:
         selected_base_mutation = None
 
@@ -253,7 +253,7 @@ def main():
         unsafe_allow_html=True,
     )
 
-    selected_mutations: set = st.session_state.get("selected-mutations", set())
+    selected_mutations: set[str] = st.session_state.get("selected-mutations", set())
 
     # workaround for recipes condition
     # note: RECIPES must stay the dependency order.
@@ -293,9 +293,7 @@ def main():
 
     try:
         # 构建突变列表
-        mutations_to_apply = [
-            mutation for mutation in mutations if mutation.name in selected_mutations
-        ]
+        mutations_to_apply = [mutations_map[name] for name in selected_mutations]
 
         if selected_base_mutation is not None:
             mutations_to_apply.append(selected_base_mutation)

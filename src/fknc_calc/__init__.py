@@ -113,3 +113,7 @@ def load_data() -> tuple[list[Plant], list[Mutation]]:
             mutations = list(map(Mutation.model_validate, raw_list))
 
     return plants, mutations
+
+
+def mutation_name_map(mutations: list[Mutation]) -> dict[str, Mutation]:
+    return {mutation.name: mutation for mutation in mutations}
