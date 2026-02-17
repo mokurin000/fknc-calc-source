@@ -196,9 +196,11 @@ def main():
         min_speed = round(
             selected_plant.growth_speed * selected_plant.max_weight * 0.03 / 100, 1
         )
-        max_speed = selected_plant.growth_speed * selected_plant.max_weight / 100
+        max_speed = round(
+            selected_plant.growth_speed * selected_plant.max_weight / 100, 2
+        )
 
-        label = f"生长速度 ({min_speed:.1f}~{selected_plant.growth_speed * selected_plant.max_weight / 100}s/%)"
+        label = f"生长速度 ({min_speed:.1f}~{max_speed:.2f}s/%)"
         st.markdown(
             f"""
     <span style='display: flex; justify-content: center;'>
@@ -318,9 +320,9 @@ def main():
         if price < 1e4:
             price_pretty = None
         elif price < 1e8:
-            price_pretty = f"{price / 1e4:.2f}".rstrip("0") + " 万"
+            price_pretty = f"{price / 1e4:.2f}".rstrip(".0") + " 万"
         else:
-            price_pretty = f"{price / 1e8:.2f}".rstrip("0") + "亿"
+            price_pretty = f"{price / 1e8:.2f}".rstrip(".0") + "亿"
 
         st.markdown(
             """<style>
