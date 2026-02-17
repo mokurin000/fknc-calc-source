@@ -304,26 +304,30 @@ def main():
 
     disable_speed = selected_plant.growth_speed == 0
     with st.container(horizontal=True):
-        selected_base_mutation_name = st.selectbox(
-            "基础突变",
-            ["无"] + base_mutation_names,
-            format_func=display_name,
-            label_visibility="collapsed",
-        )
-        input_approach = st.selectbox(
-            "输入方式",
-            [weight_text, percent_text]
-            if disable_speed
-            else [weight_text, speed_text, percent_text],
-            label_visibility="collapsed",
-            help="输入数据的方式",
-        )
-    if input_approach == weight_text:
-        weight = input_by_weight(selected_plant)
-    elif input_approach == speed_text:
-        weight = input_by_speed(selected_plant)
-    elif input_approach == percent_text:
-        weight = input_by_percent(selected_plant)
+        col1, col2, col3 = st.columns([6, 5, 16])
+        with col1:
+            selected_base_mutation_name = st.selectbox(
+                "基础突变",
+                ["无"] + base_mutation_names,
+                format_func=display_name,
+                label_visibility="collapsed",
+            )
+        with col2:
+            input_approach = st.selectbox(
+                "输入方式",
+                [weight_text, percent_text]
+                if disable_speed
+                else [weight_text, speed_text, percent_text],
+                label_visibility="collapsed",
+                help="输入数据的方式",
+            )
+        with col3:
+            if input_approach == weight_text:
+                weight = input_by_weight(selected_plant)
+            elif input_approach == speed_text:
+                weight = input_by_speed(selected_plant)
+            elif input_approach == percent_text:
+                weight = input_by_percent(selected_plant)
 
     percent = weight / selected_plant.max_weight * 100
     col1, col2, col3 = st.columns([1, 1, 1])
