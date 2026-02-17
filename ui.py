@@ -47,17 +47,13 @@ def compute_all_special_mutations(plants: list[Plant]) -> set[str]:
 
 def display_name_of_mutation(
     specials: set[str],
-    mutations: list[Mutation],
+    mutations_map: dict[str, Mutation],
     name: str,
 ):
-    try:
-        mutation = next(mutation for mutation in mutations if mutation.name == name)
-    except StopIteration:
-        if name == "无":
-            return "x1 无"
-        return name
+    if name == "无":
+        return "x1 无"
 
-    factor = mutation.multiplier
+    factor = mutations_map[name].multiplier
     if factor == int(factor):
         num_fmt = f"{factor:.0f}"
     else:
@@ -125,7 +121,7 @@ def main():
     display_name = partial(
         display_name_of_mutation,
         ALL_SPECIAL_MUTATIONS,
-        mutations,
+        mutations_map,
     )
 
     base_mutation_names = BASE_MUTATIONS[:]
