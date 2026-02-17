@@ -195,7 +195,7 @@ def num_slider_input(
     st.session_state[slider_key] = current
     st.session_state[number_key] = current
 
-    col1, col2, col3 = st.columns([7, 2, 1])
+    col1, col2, col3 = st.columns([7, 2, 2])
     with col1:
         st.slider(
             a11y_label,
