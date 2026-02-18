@@ -195,7 +195,7 @@ def num_slider_input(
     st.session_state[slider_key] = current
     st.session_state[number_key] = current
 
-    col1, col2, col3 = st.columns([7, 2, 2])
+    col1, col2, col3 = st.columns([5, 4, 2])
     with col1:
         st.slider(
             a11y_label,
@@ -283,7 +283,7 @@ def basic_info_panel(
 
     disable_speed = plant.growth_speed == 0
     with st.container(horizontal=True):
-        col1, col2, col3 = st.columns([6, 5, 16])
+        col1, col2, col3 = st.columns([5, 5, 16])
         with col1:
             base_mutation_name = st.selectbox(
                 "基础突变",
