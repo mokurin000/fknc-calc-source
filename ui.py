@@ -23,6 +23,8 @@ def input_by_weight(selected_plant: Plant) -> float:
         min_value=min_weight,
         max_value=selected_plant.max_weight,
         plant_name=selected_plant.name,
+        step=0.001,
+        format="%.3f",
     )
 
     return weight
@@ -195,8 +197,8 @@ def num_slider_input(
     key_type: str = "weight",
     a11y_label: str = "作物重量",
     unit: str = "kg",
-    step: float = 0.001,
-    format: str = "%.3f",
+    step: float = 0.01,
+    format: str = "%.2f",
 ) -> float:
     default_value = max_value * 0.05
 
@@ -245,71 +247,69 @@ def basic_info_panel(
     base_mutation_names: list[str],
     format_func: Callable[[str], str],
 ) -> tuple[str, Plant, float]:
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns([2, 1])
     with col1, st.container(horizontal=True):
-        col_1, col_2 = st.columns([2, 3])
+        with st.container():
+            col_1, col_2 = st.columns([2, 3])
 
-        plant_types = Plant.model_fields["type"].annotation.__args__
-        with col_1:
-            plant_type = st.selectbox(
-                "选择类型", plant_types, label_visibility="collapsed"
-            )
+            plant_types = Plant.model_fields["type"].annotation.__args__
+            with col_1:
+                plant_type = st.selectbox(
+                    "选择类型", plant_types, label_visibility="collapsed"
+                )
 
-        # 提供作物选择
-        plant_names = [
-            p.name
-            for p in sorted(
-                (plant for plant in plants if plant.type == plant_type),
-                key=lambda p: lazy_pinyin(p.name),
-            )
-        ]
-        with col_2:
-            plant_name = st.selectbox(
-                "选择作物", plant_names, label_visibility="collapsed"
-            )
+            # 提供作物选择
+            plant_names = [
+                p.name
+                for p in sorted(
+                    (plant for plant in plants if plant.type == plant_type),
+                    key=lambda p: lazy_pinyin(p.name),
+                )
+            ]
+            with col_2:
+                plant_name = st.selectbox(
+                    "选择作物", plant_names, label_visibility="collapsed"
+                )
+                # 获取选择的植物对象
+                plant = next(plant for plant in plants if plant.name == plant_name)
+                if plant.type != "月球":
+                    base_mutation_names.remove("星空")
 
-        # 获取选择的植物对象
-        plant = next(plant for plant in plants if plant.name == plant_name)
-        if plant.type != "月球":
-            base_mutation_names.remove("星空")
+            speed_text = "速度"
+            weight_text = "重量"
+            percent_text = "百分比"
+
+            disable_speed = plant.growth_speed == 0
+            with col_1:
+                input_approach = st.selectbox(
+                    "输入方式",
+                    [weight_text, percent_text]
+                    if disable_speed
+                    else [weight_text, speed_text, percent_text],
+                    label_visibility="collapsed",
+                    help="输入数据的方式",
+                )
+            with col_2:
+                base_mutation_name = st.selectbox(
+                    "基础突变",
+                    ["无"] + base_mutation_names,
+                    format_func=format_func,
+                    label_visibility="collapsed",
+                )
+
         st.image(
             f"https://www.fknc.top/carzyfarm/{plant_name}.png",
-            width=48,
+            width=80,
         )
 
-    with col2, st.container(horizontal=True):
-        st.write(
-            f"""类型: {plant.type}<br>
-重量: {plant.max_weight / 34:.2f}~{plant.max_weight:.2f} kg""",
-            unsafe_allow_html=True,
-        )
+    with col2, st.container(gap=None):
+        st.write(f"类型: {plant.type}")
+        st.write(f"重量: {plant.max_weight / 34:.2f}~{plant.max_weight:.2f} kg")
         if plant.growth_speed:
             st.write(f"速率: {plant.growth_speed / 100:.1f} %/(秒·kg)")
         else:
             st.write("速率: 未知")
 
-    speed_text = "速度"
-    weight_text = "重量"
-    percent_text = "百分比"
-
-    disable_speed = plant.growth_speed == 0
-    col1, col2 = st.columns([6, 5])
-    with col1:
-        base_mutation_name = st.selectbox(
-            "基础突变",
-            ["无"] + base_mutation_names,
-            format_func=format_func,
-            label_visibility="collapsed",
-        )
-    with col2:
-        input_approach = st.selectbox(
-            "输入方式",
-            [weight_text, percent_text]
-            if disable_speed
-            else [weight_text, speed_text, percent_text],
-            label_visibility="collapsed",
-            help="输入数据的方式",
-        )
     if input_approach == weight_text:
         weight = input_by_weight(plant)
     elif input_approach == speed_text:
