@@ -39,7 +39,7 @@ def input_by_percent(selected_plant: Plant) -> float:
         unit="%",
         format="%.1f",
     )
-    weight = round(percent * selected_plant.max_weight / 100, 2)
+    weight = round(percent * selected_plant.max_weight / 100, 3)
     return weight
 
 
@@ -59,7 +59,7 @@ def input_by_speed(selected_plant: Plant) -> float:
         unit="秒/%",
     )
     percent = secs_per_percent / max_speed
-    weight = round(selected_plant.max_weight * percent, 2)
+    weight = round(selected_plant.max_weight * percent, 3)
     return weight
 
 
@@ -108,7 +108,7 @@ text-align: left !important;
     \text{{基础突变}} \times \text{{专属突变}} \right) \right) \times \left(1 + \text{{常规突变}}\right) \\
 
     = \left( \text{crop.price_coefficient:,.4f} \times
-    \left( \text{weight:.2f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
+    \left( \text{weight:.3f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
     \text{price_result.special_factor:.1f} \right) \right) \times
     \left( 1 + \text{price_result.mutate_factor:.1f} \right) \\
 
@@ -195,8 +195,8 @@ def num_slider_input(
     key_type: str = "weight",
     a11y_label: str = "作物重量",
     unit: str = "kg",
-    step: float = 0.01,
-    format: str = "%.2f",
+    step: float = 0.001,
+    format: str = "%.3f",
 ) -> float:
     default_value = max_value * 0.05
 
@@ -206,7 +206,7 @@ def num_slider_input(
     st.session_state[slider_key] = current
     st.session_state[number_key] = current
 
-    col1, col2, col3 = st.columns([7, 2, 2])
+    col1, col2, col3 = st.columns([7, 2, 1])
     with col1:
         st.slider(
             a11y_label,
@@ -293,36 +293,34 @@ def basic_info_panel(
     percent_text = "百分比"
 
     disable_speed = plant.growth_speed == 0
-    with st.container(horizontal=True):
-        col1, col2, col3 = st.columns([6, 5, 16])
-        with col1:
-            base_mutation_name = st.selectbox(
-                "基础突变",
-                ["无"] + base_mutation_names,
-                format_func=format_func,
-                label_visibility="collapsed",
-            )
-        with col2:
-            input_approach = st.selectbox(
-                "输入方式",
-                [weight_text, percent_text]
-                if disable_speed
-                else [weight_text, speed_text, percent_text],
-                label_visibility="collapsed",
-                help="输入数据的方式",
-            )
-        with col3:
-            if input_approach == weight_text:
-                weight = input_by_weight(plant)
-            elif input_approach == speed_text:
-                weight = input_by_speed(plant)
-            elif input_approach == percent_text:
-                weight = input_by_percent(plant)
+    col1, col2 = st.columns([6, 5])
+    with col1:
+        base_mutation_name = st.selectbox(
+            "基础突变",
+            ["无"] + base_mutation_names,
+            format_func=format_func,
+            label_visibility="collapsed",
+        )
+    with col2:
+        input_approach = st.selectbox(
+            "输入方式",
+            [weight_text, percent_text]
+            if disable_speed
+            else [weight_text, speed_text, percent_text],
+            label_visibility="collapsed",
+            help="输入数据的方式",
+        )
+    if input_approach == weight_text:
+        weight = input_by_weight(plant)
+    elif input_approach == speed_text:
+        weight = input_by_speed(plant)
+    elif input_approach == percent_text:
+        weight = input_by_percent(plant)
 
     percent = weight / plant.max_weight * 100
     col1, col2, col3 = st.columns([1, 1, 1])
     with col1:
-        st.write(f"重量：{weight:.2f} kg")
+        st.write(f"重量：{weight:.3f} kg")
     with col2:
         st.write(f"百分比：{percent:.1f}%")
     with col3:
