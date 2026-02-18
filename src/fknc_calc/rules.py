@@ -4,9 +4,9 @@ __all__ = ["is_mutation_disabled"]
 
 # 配方数据：每种突变产物所需的原料
 RECIPES = [
+    {"ingredients": ["太阳耀斑", "灼热"], "result": "流火"},
     {"ingredients": ["陶化", "灼热"], "result": "瓷化"},
     {"ingredients": ["沙尘", "潮湿"], "result": "陶化"},
-    {"ingredients": ["太阳耀斑", "灼热"], "result": "流火"},
     {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
 ]
 
@@ -70,7 +70,7 @@ def is_mutation_disabled(
     if new_mutation == "灼热":
         has_flow_fire = "流火" in selected_mutations
         has_porcelain = "瓷化" in selected_mutations
-        return has_flow_fire and has_porcelain
+        return has_flow_fire or has_porcelain
 
     if new_mutation == "沙尘" and "潮湿" in selected_mutations:
         return "陶化" in selected_mutations or "瓷化" in selected_mutations

@@ -107,19 +107,19 @@ text-align: left !important;
     = \left( \text{{作物基价}} \times \left( \text{{重量因数}} \times
     \text{{基础突变}} \times \text{{专属突变}} \right) \right) \times \left(1 + \text{{常规突变}}\right) \\
 
-    = \left( \text{crop.price_coefficient:.4f} \times
+    = \left( \text{crop.price_coefficient:,.4f} \times
     \left( \text{weight:.2f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
     \text{price_result.special_factor:.1f} \right) \right) \times
-    \text{price_result.mutate_factor + 1:.1f} \\
+    \left( 1 + \text{price_result.mutate_factor:.1f} \right) \\
 
-    = \left( \text{crop.price_coefficient:.4f} \times
+    = \left( \text{crop.price_coefficient:,.4f} \times
     \text{mid_factor:.4f} \right) \times
     \text{(price_result.mutate_factor + 1):.1f} \\
 
-    = \text{crop.price_coefficient * mid_factor:.4f} \times
+    = \text{crop.price_coefficient * mid_factor:,.4f} \times
     \text{(price_result.mutate_factor + 1):.1f} \\
 
-    = \text{price:.0f}
+    = \text{price:,.0f}
     """
     if price_pretty is not None:
         latex_expression += r""" \\
@@ -164,17 +164,28 @@ def display_name_of_mutation(
     name: str,
 ):
     if name == "无":
-        return "x1 无"
+        return "❌ 无"
 
-    factor = mutations_map[name].multiplier
+    color_map = {
+        "灰色": "🩶",
+        "绿色": "💚",
+        "蓝色": "💙",
+        "金色": "💛",
+        "彩色": "🌈",
+        "紫色": "💜",
+    }
+
+    mut: Mutation = mutations_map[name]
+    color = color_map[mut.color]
+    factor = mut.multiplier
     if factor == int(factor):
         num_fmt = f"{factor:.0f}"
     else:
         num_fmt = f"{factor:.1f}"
     if name in specials or name in BASE_MUTATIONS:
-        return f"x{num_fmt} {name}"
+        return f"{color}x{num_fmt} {name}"
     else:
-        return f"+{num_fmt} {name}"
+        return f"{color}+{num_fmt} {name}"
 
 
 def num_slider_input(
@@ -195,7 +206,7 @@ def num_slider_input(
     st.session_state[slider_key] = current
     st.session_state[number_key] = current
 
-    col1, col2, col3 = st.columns([5, 4, 2])
+    col1, col2, col3 = st.columns([7, 2, 2])
     with col1:
         st.slider(
             a11y_label,
@@ -283,7 +294,7 @@ def basic_info_panel(
 
     disable_speed = plant.growth_speed == 0
     with st.container(horizontal=True):
-        col1, col2, col3 = st.columns([5, 5, 16])
+        col1, col2, col3 = st.columns([6, 5, 16])
         with col1:
             base_mutation_name = st.selectbox(
                 "基础突变",
