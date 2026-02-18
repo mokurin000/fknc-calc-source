@@ -2,6 +2,7 @@ import math
 from typing import List, Dict
 from pydantic import BaseModel
 
+
 class PriceCo(BaseModel):
     price: int
     weight: float
@@ -69,17 +70,14 @@ def coefficient_log_regression(data_list: List[PriceCo]) -> float:
 
 
 def evaluate(data_list: List[PriceCo], k: float) -> Dict[str, float]:
-    abs_sq_error = 0.0
     rel_sq_error = 0.0
 
     for p in data_list:
         predicted = predict_price(p, k)
 
-        abs_sq_error += (predicted - p.price) ** 2
         rel_sq_error += ((predicted - p.price) / p.price) ** 2
 
     return {
-        "绝对平方误差": abs_sq_error,
         "相对平方误差": rel_sq_error,
     }
 
@@ -89,6 +87,13 @@ def evaluate(data_list: List[PriceCo], k: float) -> Dict[str, float]:
 # =========================
 
 coefficient_map: Dict[str, List[PriceCo]] = {
+    "月莓": [
+        PriceCo(
+            price=13937700,
+            weight=3.20,
+            weather=30.0,
+        )
+    ],
     "红包果": [
         PriceCo(
             price=79946,
@@ -110,6 +115,56 @@ coefficient_map: Dict[str, List[PriceCo]] = {
             weight=0.17,
             weather=10.0,
             base=3.0,
+        ),
+    ],
+    "星叶菜": [
+        PriceCo(
+            price=20815600,  # ..
+            base=10.0,
+            weight=6.31,
+            weather=32.0,
+        ),
+        PriceCo(
+            price=4169000,  # ..
+            base=30.0,
+            weight=1.04,
+            weather=32.0,
+        ),
+        PriceCo(
+            price=1413400,  # ..
+            base=20.0,
+            weight=0.82,
+            weather=23.0,
+        ),
+        PriceCo(
+            price=2459232,
+            base=20.0,
+            weather=13.0,
+            weight=1.70,
+        ),
+        PriceCo(
+            price=6615,
+            weight=0.48,
+            weather=4.0,
+        ),
+        PriceCo(
+            price=5816,
+            weight=0.44,
+            weather=4.0,
+        ),
+    ],
+    "幻月花": [
+        PriceCo(
+            price=18835500,  # ..
+            base=20.0,
+            weight=2.03,
+            weather=38.0,
+        ),
+        PriceCo(
+            price=17663800,  # ..
+            base=20.0,
+            weight=2.37,
+            weather=28.0,
         ),
     ],
 }
@@ -137,14 +192,15 @@ def run_analysis(name: str, data_list: List[PriceCo]) -> None:
     ]:
         err = evaluate(data_list, k)
         print(f"\n[{method_name}]")
-        print(f"绝对平方误差: {err['绝对平方误差']:.4f}")
-        print(f"相对平方误差: {err['相对平方误差']:.6f}")
+        print(f"相对平方误差和(%): {err['相对平方误差'] * 10000:.6f}")
 
         print("各样本差额:")
         for p in data_list:
             predicted = predict_price(p, k)
-            diff = predicted - p.price
-            print(f"  weight={p.weight:.3f}, 差额={diff:.4f}")
+            diff = (predicted - p.price) / p.price
+            print(
+                f"  weight={p.weight:.2f}, expected {p.price}, got {predicted:.0f} ({diff * 100:+.2f}%)"
+            )
 
 
 if __name__ == "__main__":
