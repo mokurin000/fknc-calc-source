@@ -177,6 +177,32 @@ coefficient_map: Dict[str, List[PriceCo]] = {
             weather=28.0,
         ),
     ],
+    "月兔": [
+        PriceCo(
+            price=66564,
+            weight=0.90,
+            weather=6.0,
+        ),
+        PriceCo(
+            price=96906,
+            weight=1.15,
+            weather=6.0,
+        ),
+    ],
+    "大王菊": [
+        PriceCo(
+            price=1394100,  # ..
+            weight=0.68,
+            base=20,
+            weather=4,
+        ),
+        PriceCo(
+            price=1951700,  # ..
+            weight=0.68,
+            base=20,
+            weather=6,
+        ),
+    ],
 }
 
 
