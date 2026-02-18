@@ -4,10 +4,10 @@ __all__ = ["is_mutation_disabled"]
 
 # 配方数据：每种突变产物所需的原料
 RECIPES = [
-    {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
-    {"ingredients": ["太阳耀斑", "灼热"], "result": "流火"},
-    {"ingredients": ["沙尘", "潮湿"], "result": "陶化"},
     {"ingredients": ["陶化", "灼热"], "result": "瓷化"},
+    {"ingredients": ["沙尘", "潮湿"], "result": "陶化"},
+    {"ingredients": ["太阳耀斑", "灼热"], "result": "流火"},
+    {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
 ]
 
 MOON_ONLY = ["流火", "日蚀", "暗雾", "陨石"]

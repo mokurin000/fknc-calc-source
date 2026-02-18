@@ -399,16 +399,12 @@ def main():
 
     # workaround for recipes condition
     # note: RECIPES must stay the dependency order.
-    count = 0
+    recipe_names = []
     for recipe in RECIPES:
         mutation = recipe["result"]
         if mutation in selectable_names:
-            count += 1
-
             selectable_names.remove(mutation)
-            selectable_names.insert(0, mutation)
-
-    selectable_names = selectable_names[:count] + selectable_names[: count - 1 : -1]
+            recipe_names.append(mutation)
 
     # 处理剩下的顺序
     selectables = special + selectable_names
@@ -418,11 +414,12 @@ def main():
     )
 
     cols_len = 5
-    cols = st.columns([1] * cols_len)
+    cols = st.columns([1] * cols_len, gap=None, border=False)
     col_items: dict[int, list[str]] = defaultdict(list)
 
+    col_items[0] = recipe_names
     for i, mutation_name in enumerate(selectables):
-        col_items[i % cols_len].append(mutation_name)
+        col_items[1 + i % (cols_len - 1)].append(mutation_name)
 
     for i, items in col_items.items():
         with cols[i]:
