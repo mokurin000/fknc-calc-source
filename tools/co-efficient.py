@@ -99,10 +99,16 @@ def evaluate(data_list: List[PriceCo], k: float) -> Dict[str, float]:
 coefficient_map: Dict[str, List[PriceCo]] = {
     "月莓": [
         PriceCo(
-            price=13937700,
-            weight=3.20,
-            weather=30.0,
-        )
+            price=1069900,  # ..
+            weight=0.62,
+            base=40,
+            weather=13.0,
+        ),
+        PriceCo(
+            price=5592,
+            weight=0.61,
+            weather=2.0,
+        ),
     ],
     "红包果": [
         PriceCo(
@@ -201,6 +207,18 @@ coefficient_map: Dict[str, List[PriceCo]] = {
             weight=0.68,
             base=20,
             weather=6,
+        ),
+        PriceCo(
+            price=2788200,  # ..
+            weight=0.68,
+            base=20,
+            weather=9,
+        ),
+        PriceCo(
+            price=3067000,  # ..
+            weight=0.68,
+            base=20,
+            weather=10,
         ),
     ],
 }
