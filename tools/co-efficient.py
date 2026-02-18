@@ -29,6 +29,16 @@ def predict_price(p: PriceCo, k: float) -> float:
 
 
 # =========================
+# 简单平均值
+# =========================
+
+
+def coefficient_mean(data_list: List[PriceCo]) -> float:
+    nums = [p.price / compute_x(p) for p in data_list]
+    return sum(sorted(nums)) / len(nums)
+
+
+# =========================
 # 最小化 Σ(kX - price)^2
 # =========================
 
@@ -178,17 +188,20 @@ coefficient_map: Dict[str, List[PriceCo]] = {
 def run_analysis(name: str, data_list: List[PriceCo]) -> None:
     print(f"\n===== {name} =====")
 
+    k_mean = coefficient_mean(data_list)
     k_ls = coefficient_least_squares(data_list)
     k_log = coefficient_log_regression(data_list)
 
-    print(f"最小二乘 k       : {k_ls:.6f}")
-    print(f"log 回归 k       : {k_log:.6f}")
+    print(f"最小二乘 k: \t{k_ls:.6f}")
+    print(f"log 回归 k: \t{k_log:.6f}")
+    print(f"平均取值 k: \t{k_mean:.6f}")
 
     print("\n--- 误差分析 ---")
 
     for method_name, k in [
         ("最小二乘", k_ls),
         ("log 回归", k_log),
+        ("平均取值", k_mean),
     ]:
         err = evaluate(data_list, k)
         print(f"\n[{method_name}]")
