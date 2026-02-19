@@ -220,6 +220,12 @@ coefficient_map: Dict[str, List[PriceCo]] = {
             base=20,
             weather=10,
         ),
+        PriceCo(
+            price=51763400,
+            weather=58,
+            base=30,
+            weight=1.11,
+        ),
     ],
 }
 
