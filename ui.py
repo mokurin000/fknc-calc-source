@@ -106,8 +106,15 @@ text-align: left !important;
     latex_expression = rf"""
     \text{{总价格}} \\
 
-    = \left( \text{{作物基价}} \times \left( \text{{重量因数}} \times
-    \text{{基础突变}} \times \text{{专属突变}} \right) \right) \times \left(1 + \text{{常规突变}}\right) \\
+    = \left( \text{{作物基价}} \times
+        \left(
+            \text{{重量因数}} \times \text{{基础突变}} \times \text{{专属突变}}
+        \right)
+    \right)
+    \times
+    \left(1 +
+        \sum^n_{{i=1}}\text{{常规突变}}_i
+    \right) \\
 
     = \left( \text{crop.price_coefficient:,.4f} \times
     \left( \text{weight:.3f}^{{1.5}} \times \text{price_result.base_factor:.1f} \times
