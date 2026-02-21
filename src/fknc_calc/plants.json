@@ -80,7 +80,7 @@
   },
   {
     "name": "玉米",
-    "priceCoefficient": 103.5216,
+    "priceCoefficient": 103.5096,
     "maxWeight": 40.8,
     "growthSpeed": 27.78,
     "type": "普通"
@@ -169,7 +169,7 @@
   },
   {
     "name": "猕猴桃",
-    "priceCoefficient": 2098.0013,
+    "priceCoefficient": 2147.9813,
     "maxWeight": 13.6,
     "growthSpeed": 278,
     "type": "普通"
@@ -207,7 +207,7 @@
   },
   {
     "name": "大王菊",
-    "priceCoefficient": 24861.5338,
+    "priceCoefficient": 24833.3587,
     "maxWeight": 10.2,
     "growthSpeed": 2400,
     "type": "普通"
@@ -291,7 +291,7 @@
   },
   {
     "name": "月莓",
-    "priceCoefficient": 3891.3981,
+    "priceCoefficient": 3920.9258,
     "maxWeight": 8.5,
     "growthSpeed": 375,
     "type": "月球"
@@ -333,9 +333,9 @@
   },
   {
     "name": "月兔",
-    "priceCoefficient": 11138.4363,
+    "priceCoefficient": 11154.0159,
     "maxWeight": 23.8,
-    "growthSpeed": 0,
+    "growthSpeed": 1524,
     "type": "月球"
   },
   {
