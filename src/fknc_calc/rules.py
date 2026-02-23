@@ -10,7 +10,7 @@ RECIPES = [
     {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
 ]
 
-MOON_ONLY = ["流火", "日蚀", "暗雾", "陨石"]
+MOON_ONLY = ["流火", "日蚀", "暗雾", "陨石", "太阳耀斑"]
 
 
 def get_all_ingredients(mutation: str, visited: set[str] | None = None) -> list[str]:
