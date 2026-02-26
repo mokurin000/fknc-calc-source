@@ -304,10 +304,11 @@ def basic_info_panel(
                     label_visibility="collapsed",
                 )
 
-        st.image(
-            f"https://www.fknc.top/carzyfarm/{plant_name}.png",
-            width=80,
-        )
+        if plant_name in ["月兔", "红包树", "星空玫瑰"]:
+            url = f"https://www.fknc.top/carzyfarm/{plant_name}1.png"
+        else:
+            url = f"https://www.fknc.top/carzyfarm/{plant_name}.png"
+        st.image(url, width=80)
 
     with col2, st.container(gap=None):
         st.write(f"类型: {plant.type}")
