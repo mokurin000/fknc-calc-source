@@ -40,6 +40,11 @@
     "multiplier": 2
   },
   {
+    "name": "月光",
+    "color": "灰色",
+    "multiplier": 4
+  },
+  {
     "name": "银",
     "color": "绿色",
     "multiplier": 3
