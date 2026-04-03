@@ -203,5 +203,10 @@
     "name": "笑日葵",
     "color": "彩色",
     "multiplier": 10
+  },
+  {
+    "name": "哈基咪",
+    "color": "蓝色",
+    "multiplier": 5
   }
 ]
