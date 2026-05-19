@@ -21,6 +21,8 @@ class Plant(BaseModel):
     )
 
     name: str
+    image_url: str
+    """图片URL，相对于 https://www.fknc.top"""
     price_coefficient: float
     max_weight: float
     growth_speed: float

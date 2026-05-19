@@ -208,5 +208,10 @@
     "name": "哈基咪",
     "color": "蓝色",
     "multiplier": 5
+  },
+  {
+    "name": "故障",
+    "color": "蓝色",
+    "multiplier": 5
   }
 ]

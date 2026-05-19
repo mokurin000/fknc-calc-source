@@ -1,14 +1,14 @@
 [project]
 name = "fknc-calc"
-version = "0.2.4"
+version = "0.2.5"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "orjson>=3.11.7",
-    "pydantic>=2.12.5",
+    "orjson>=3.11.9",
+    "pydantic>=2.13.4",
     "pypinyin>=0.55.0",
-    "streamlit>=1.55.0",
+    "streamlit>=1.57.0",
 ]
 
 [tool.uv]
