@@ -1,103 +1,80 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import asyncio
+import json
 
-def extract_code_blocks(input_file, output_file):
-    """
-    从输入文件中提取包含特定关键词的代码块并保存到输出文件
+from playwright.async_api import async_playwright, Page
 
-    Args:
-        input_file: 输入文件路径
-        output_file: 输出文件路径
-    """
-
-    # 读取整个文件内容
-    with open(input_file, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # 要搜索的关键词
-    keywords = ['name:"土豆"', 'name:"颤栗"']
-    extracted_blocks = []
-
-    for keyword in keywords:
-        block = extract_block_for_keyword(content, keyword)
-        if block:
-            extracted_blocks.append(block)
-
-    plants, mutations = extracted_blocks
-    with open(output_file, "w", encoding="utf-8") as f:
-        # 清空文件并写入新内容
-        f.write("// Extracted code blocks\n\n")
-
-        f.write("const plants = ")
-        f.write(plants)
-        f.write(";\n")
-
-        f.write("const mutations = ")
-        f.write(mutations)
-        f.write(";\n")
-
-        f.write("""
-const fs = require('fs').promises;
-async function exportToJson() {
-  try {
-    await fs.writeFile('src/fknc_calc/plants.json', JSON.stringify(plants, null, 2));
-    await fs.writeFile('src/fknc_calc/mutations.json', JSON.stringify(mutations, null, 2));
-  } catch (error) {
-    console.error('写入文件失败:', error);
-  }
-}
-
-exportToJson();
-""")
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
 
 
-def extract_block_for_keyword(content: str, keyword):
-    """
-    为特定关键词提取代码块
+async def scrape(page: Page):
+    email_login = page.locator("div.login-tab-row > div.login-tab:nth-child(2)")
+    email = page.locator("input[type=email]")
+    password = page.locator("input[type=password]")
+    eula = page.locator("input[type=checkbox]")
+    login = page.locator("button[type=submit]")
 
-    Args:
-        content: 文件内容字符串
-        keyword: 要搜索的关键词
+    await page.goto("https://www.fknc.top")
+    await page.evaluate('localStorage["invite_modal_first_shown"] = "1"')
 
-    Returns:
-        提取的代码块字符串，如果没找到则返回None
-    """
+    await email_login.click(timeout=0)
+    await email.fill("mokurin000@gmail.com")
+    await password.fill("9XlM3fhaGVyguvXJun26iP9UCpa935")
+    await eula.check()
 
-    # 找到关键词的位置
-    keyword_pos = content.find(keyword)
-    if keyword_pos == -1:
-        print(f"警告: 未找到包含 '{keyword}' 的内容")
-        return None
+    await login.click()
 
-    start_pos = content.rfind("[{", 0, keyword_pos)
-    if start_pos == -1:
-        print(f"错误: 在关键词 '{keyword}' 之前未找到 '['")
-        return None
+    fknc_data = None
 
-    end_pos = content.find("}]", start_pos, len(content))
+    while fknc_data is None:
+        await asyncio.sleep(0.1)
 
-    if end_pos == -1:
-        print("错误: 未找到匹配的 '}]'")
-        return None
+        state = await page.context.storage_state()
+        fknc_localStorage = state["origins"][0]["localStorage"]
+        for entry in fknc_localStorage:
+            if entry["name"] == "fknc_game_data":
+                fknc_data = json.loads(entry["value"])
+                break
 
-    # 提取代码块
-    extracted_block = content[start_pos : end_pos + 2]
-    return extracted_block
+    plants = fknc_data["crops"]
+    mutations = fknc_data["mutations"]
+
+    with open("src/fknc_calc/plants.json", "w", encoding="utf-8") as f:
+        json.dump(
+            plants,
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
+    with open("src/fknc_calc/mutations.json", "w", encoding="utf-8") as f:
+
+        def clean_mut(mut: dict) -> dict:
+            mut.pop("sortOrder")
+            mut.pop("isActive")
+            mut.pop("shareBitIndex")
+            return mut
+
+        json.dump(
+            [clean_mut(mut) for mut in mutations],
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
 
 
-def main():
-    """主函数"""
-    input_file = "index.js"  # 输入文件名
-    output_file = "export.js"  # 输出文件名
-
-    try:
-        extract_code_blocks(input_file, output_file)
-    except FileNotFoundError:
-        print(f"错误: 找不到输入文件 '{input_file}'")
-    except Exception as e:
-        print(f"错误: {e}")
+async def main():
+    async with async_playwright() as pw:
+        async with await pw.chromium.launch(
+            channel="chrome",
+            headless=False,
+        ) as browser:
+            async with await browser.new_context(
+                user_agent=USER_AGENT,
+            ) as ctx:
+                async with await ctx.new_page() as page:
+                    await scrape(page)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

@@ -17,7 +17,7 @@ BASE_MUTATIONS = [
 class Plant(BaseModel):
     model_config = ConfigDict(
         alias_generator=to_camel,
-        populate_by_name=True,
+        validate_by_alias=True,
     )
 
     name: str
@@ -32,9 +32,30 @@ class Plant(BaseModel):
 
 
 class Mutation(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        validate_by_alias=True,
+    )
+
     name: str
-    color: Literal["灰色", "绿色", "蓝色", "金色", "彩色", "紫色"]
+    color: Literal[
+        "灰色",
+        "绿色",
+        "蓝色",
+        "金色",
+        "彩色",
+        "紫色",
+    ]
     multiplier: float
+    group_key: Literal[
+        "quality",
+        "special",
+        "moon",
+        "common",
+        "intermediate",
+        "rare",
+        "past",
+    ]
 
 
 class PriceResult(BaseModel):
