@@ -1,11 +1,17 @@
 [
   {
+    "name": "灰壤豆",
+    "imageUrl": "/carzyfarm/新灰壤豆.png",
+    "priceCoefficient": 1374.736,
+    "maxWeight": 3.4,
+    "growthSpeed": 180
+  },
+  {
     "name": "土豆",
     "imageUrl": "/carzyfarm/土豆.png",
     "priceCoefficient": 26.3026,
     "maxWeight": 11.9,
     "growthSpeed": 28.5,
-    "type": "普通",
     "specialMutations": [
       "薯片"
     ]
@@ -15,40 +21,49 @@
     "imageUrl": "/carzyfarm/香菇.png",
     "priceCoefficient": 687.682,
     "maxWeight": 3.4,
-    "growthSpeed": 133,
-    "type": "普通"
+    "growthSpeed": 133
   },
   {
     "name": "番茄",
     "imageUrl": "/carzyfarm/番茄.png",
     "priceCoefficient": 66.2398,
     "maxWeight": 10.2,
-    "growthSpeed": 33.33,
-    "type": "普通"
+    "growthSpeed": 33.33
   },
   {
     "name": "波斯菊",
     "imageUrl": "/carzyfarm/波斯菊.png",
     "priceCoefficient": 43.5395,
     "maxWeight": 34,
-    "growthSpeed": 17,
-    "type": "普通"
+    "growthSpeed": 17
+  },
+  {
+    "name": "月光草",
+    "imageUrl": "/carzyfarm/新月光草.png",
+    "priceCoefficient": 343.8951,
+    "maxWeight": 3.4,
+    "growthSpeed": 111
+  },
+  {
+    "name": "月番茄",
+    "imageUrl": "/carzyfarm/新月番茄.png",
+    "priceCoefficient": 662.4769,
+    "maxWeight": 10.2,
+    "growthSpeed": 111
   },
   {
     "name": "大豆",
     "imageUrl": "/carzyfarm/大豆.png",
     "priceCoefficient": 2579.0104,
     "maxWeight": 3.4,
-    "growthSpeed": 275,
-    "type": "普通"
+    "growthSpeed": 275
   },
   {
-    "name": "竹子",
-    "imageUrl": "/carzyfarm/竹子.png",
-    "priceCoefficient": 12.2462,
-    "maxWeight": 136,
-    "growthSpeed": 7.5,
-    "type": "普通"
+    "name": "月灯草",
+    "imageUrl": "/carzyfarm/新月灯草.png",
+    "priceCoefficient": 1498.0086,
+    "maxWeight": 5.1,
+    "growthSpeed": 205
   },
   {
     "name": "黄瓜",
@@ -56,10 +71,16 @@
     "priceCoefficient": 215.0457,
     "maxWeight": 13.6,
     "growthSpeed": 50,
-    "type": "普通",
     "specialMutations": [
       "黄瓜蛇"
     ]
+  },
+  {
+    "name": "竹子",
+    "imageUrl": "/carzyfarm/竹子.png",
+    "priceCoefficient": 12.2462,
+    "maxWeight": 136,
+    "growthSpeed": 7.5
   },
   {
     "name": "西瓜",
@@ -67,7 +88,6 @@
     "priceCoefficient": 10.7111,
     "maxWeight": 170,
     "growthSpeed": 6,
-    "type": "普通",
     "specialMutations": [
       "方形"
     ]
@@ -77,48 +97,70 @@
     "imageUrl": "/carzyfarm/梨.png",
     "priceCoefficient": 484.155,
     "maxWeight": 13.6,
-    "growthSpeed": 75,
-    "type": "普通"
+    "growthSpeed": 75
   },
   {
     "name": "橘子",
     "imageUrl": "/carzyfarm/橘子.png",
     "priceCoefficient": 537.9143,
     "maxWeight": 13.6,
-    "growthSpeed": 75,
-    "type": "普通"
+    "growthSpeed": 75
+  },
+  {
+    "name": "蓝莓",
+    "imageUrl": "/carzyfarm/蓝莓.png",
+    "priceCoefficient": 113,
+    "maxWeight": 34,
+    "growthSpeed": 0
   },
   {
     "name": "玉米",
     "imageUrl": "/carzyfarm/玉米.png",
     "priceCoefficient": 103.5096,
     "maxWeight": 40.8,
-    "growthSpeed": 27.78,
-    "type": "普通"
+    "growthSpeed": 27.78
   },
   {
     "name": "白菜",
     "imageUrl": "/carzyfarm/白菜.png",
     "priceCoefficient": 579.7213,
     "maxWeight": 10.2,
-    "growthSpeed": 80,
-    "type": "普通"
+    "growthSpeed": 80
+  },
+  {
+    "name": "花生",
+    "imageUrl": "/carzyfarm/花生.png",
+    "priceCoefficient": 2844,
+    "maxWeight": 5.1,
+    "growthSpeed": 0
   },
   {
     "name": "牵牛花",
     "imageUrl": "/carzyfarm/牵牛花.png",
     "priceCoefficient": 2108.1851,
     "maxWeight": 5.1,
-    "growthSpeed": 200,
-    "type": "普通"
+    "growthSpeed": 200
   },
   {
     "name": "棉花",
     "imageUrl": "/carzyfarm/棉花.png",
     "priceCoefficient": 2578.4733,
     "maxWeight": 5.2,
-    "growthSpeed": 200,
-    "type": "普通"
+    "growthSpeed": 200
+  },
+  {
+    "name": "银辉苔",
+    "imageUrl": "/carzyfarm/新银辉苔.png",
+    "priceCoefficient": 3046.6455,
+    "maxWeight": 5.1,
+    "growthSpeed": 280
+  },
+  {
+    "name": "月环树",
+    "imageUrl": "/carzyfarm/新月环果.png",
+    "priceCoefficient": 322.0468,
+    "maxWeight": 20.4,
+    "growthSpeed": 58
   },
   {
     "name": "苹果",
@@ -126,7 +168,6 @@
     "priceCoefficient": 188.7409,
     "maxWeight": 37.4,
     "growthSpeed": 40.5,
-    "type": "普通",
     "specialMutations": [
       "糖葫芦"
     ]
@@ -136,8 +177,21 @@
     "imageUrl": "/carzyfarm/石榴.png",
     "priceCoefficient": 527.5836,
     "maxWeight": 20,
-    "growthSpeed": 83.5,
-    "type": "普通"
+    "growthSpeed": 83.5
+  },
+  {
+    "name": "月莓",
+    "imageUrl": "/carzyfarm/新月莓.png",
+    "priceCoefficient": 3916.4157,
+    "maxWeight": 8.5,
+    "growthSpeed": 375
+  },
+  {
+    "name": "星叶菜",
+    "imageUrl": "/carzyfarm/新星叶菜.png",
+    "priceCoefficient": 3976.5503,
+    "maxWeight": 10.2,
+    "growthSpeed": 416
   },
   {
     "name": "香蕉",
@@ -145,7 +199,6 @@
     "priceCoefficient": 2484.6553,
     "maxWeight": 10.2,
     "growthSpeed": 280,
-    "type": "普通",
     "specialMutations": [
       "香蕉猴"
     ]
@@ -155,16 +208,21 @@
     "imageUrl": "/carzyfarm/车厘子.png",
     "priceCoefficient": 1657.661,
     "maxWeight": 10.5,
-    "growthSpeed": 166,
-    "type": "普通"
+    "growthSpeed": 166
+  },
+  {
+    "name": "柿子",
+    "imageUrl": "/carzyfarm/柿子.png",
+    "priceCoefficient": 235,
+    "maxWeight": 34,
+    "growthSpeed": 0
   },
   {
     "name": "椰子",
     "imageUrl": "/carzyfarm/椰子.png",
     "priceCoefficient": 145.9826,
     "maxWeight": 40.8,
-    "growthSpeed": 32.5,
-    "type": "普通"
+    "growthSpeed": 32.5
   },
   {
     "name": "南瓜",
@@ -172,10 +230,16 @@
     "priceCoefficient": 12.9595,
     "maxWeight": 204,
     "growthSpeed": 6.5,
-    "type": "普通",
     "specialMutations": [
       "万圣夜"
     ]
+  },
+  {
+    "name": "龙眼",
+    "imageUrl": "/carzyfarm/龙眼.png",
+    "priceCoefficient": 4353,
+    "maxWeight": 10.2,
+    "growthSpeed": 0
   },
   {
     "name": "草莓",
@@ -183,34 +247,128 @@
     "priceCoefficient": 8706.3654,
     "maxWeight": 8.5,
     "growthSpeed": 888,
-    "type": "普通",
     "specialMutations": [
       "连体"
     ]
-  },
-  {
-    "name": "猕猴桃",
-    "imageUrl": "/carzyfarm/猕猴桃.png",
-    "priceCoefficient": 2147.9813,
-    "maxWeight": 13.6,
-    "growthSpeed": 278,
-    "type": "普通"
   },
   {
     "name": "荔枝",
     "imageUrl": "/carzyfarm/荔枝.png",
     "priceCoefficient": 790.1983,
     "maxWeight": 23.8,
-    "growthSpeed": 135,
-    "type": "普通"
+    "growthSpeed": 135
+  },
+  {
+    "name": "菠菜",
+    "imageUrl": "/carzyfarm/菠菜.png",
+    "priceCoefficient": 3841,
+    "maxWeight": 23.8,
+    "growthSpeed": 0
+  },
+  {
+    "name": "柚子",
+    "imageUrl": "/carzyfarm/柚子.png",
+    "priceCoefficient": 226,
+    "maxWeight": 61.2,
+    "growthSpeed": 0
+  },
+  {
+    "name": "液光藤",
+    "imageUrl": "/carzyfarm/新液光藤.png",
+    "priceCoefficient": 3512.6104,
+    "maxWeight": 20.4,
+    "growthSpeed": 520
+  },
+  {
+    "name": "月核树",
+    "imageUrl": "/carzyfarm/新月核果.png",
+    "priceCoefficient": 3388.6303,
+    "maxWeight": 17,
+    "growthSpeed": 460
+  },
+  {
+    "name": "猕猴桃",
+    "imageUrl": "/carzyfarm/猕猴桃.png",
+    "priceCoefficient": 2147.9813,
+    "maxWeight": 13.6,
+    "growthSpeed": 278
   },
   {
     "name": "榴莲",
     "imageUrl": "/carzyfarm/榴莲.png",
     "priceCoefficient": 202.944,
     "maxWeight": 61.2,
-    "growthSpeed": 55.55,
-    "type": "普通"
+    "growthSpeed": 55.55
+  },
+  {
+    "name": "葡萄",
+    "imageUrl": "/carzyfarm/葡萄.png",
+    "priceCoefficient": 24836.8915,
+    "maxWeight": 10.2,
+    "growthSpeed": 2400
+  },
+  {
+    "name": "蟠桃",
+    "imageUrl": "/carzyfarm/蟠桃.png",
+    "priceCoefficient": 8783.1627,
+    "maxWeight": 20.4,
+    "growthSpeed": 1333.33
+  },
+  {
+    "name": "星空玫瑰",
+    "imageUrl": "/carzyfarm/新星空玫瑰.png",
+    "priceCoefficient": 33128.7533,
+    "maxWeight": 10.2,
+    "growthSpeed": 2966.6
+  },
+  {
+    "name": "月影梅",
+    "imageUrl": "/carzyfarm/新月影梅.png",
+    "priceCoefficient": 77270.106,
+    "maxWeight": 3.4,
+    "growthSpeed": 4000
+  },
+  {
+    "name": "大王菊",
+    "imageUrl": "/carzyfarm/大王菊.png",
+    "priceCoefficient": 24833.3587,
+    "maxWeight": 10.2,
+    "growthSpeed": 2400
+  },
+  {
+    "name": "惊奇菇",
+    "imageUrl": "/carzyfarm/惊奇菇.png",
+    "priceCoefficient": 49680.1819,
+    "maxWeight": 10.2,
+    "growthSpeed": 2400
+  },
+  {
+    "name": "月兔",
+    "imageUrl": "/carzyfarm/新月兔.png",
+    "priceCoefficient": 11161.4743,
+    "maxWeight": 23.8,
+    "growthSpeed": 1524
+  },
+  {
+    "name": "魔鬼朝天椒",
+    "imageUrl": "/carzyfarm/魔鬼朝天椒.png",
+    "priceCoefficient": 33143.6022,
+    "maxWeight": 10.2,
+    "growthSpeed": 2400
+  },
+  {
+    "name": "月蟾蜍",
+    "imageUrl": "/carzyfarm/新月蟾蜍.png",
+    "priceCoefficient": 9807.0881,
+    "maxWeight": 34,
+    "growthSpeed": 990
+  },
+  {
+    "name": "芦荟",
+    "imageUrl": "/carzyfarm/芦荟.png",
+    "priceCoefficient": 54282.0587,
+    "maxWeight": 10.2,
+    "growthSpeed": 0
   },
   {
     "name": "向日葵",
@@ -218,201 +376,50 @@
     "priceCoefficient": 370.3206,
     "maxWeight": 51,
     "growthSpeed": 80,
-    "type": "普通",
     "specialMutations": [
       "笑日葵"
     ]
-  },
-  {
-    "name": "松果",
-    "imageUrl": "/carzyfarm/松果.png",
-    "priceCoefficient": 4615.5964,
-    "maxWeight": 17,
-    "growthSpeed": 570,
-    "type": "普通"
-  },
-  {
-    "name": "大王菊",
-    "imageUrl": "/carzyfarm/大王菊.png",
-    "priceCoefficient": 24833.3587,
-    "maxWeight": 10.2,
-    "growthSpeed": 2400,
-    "type": "普通"
-  },
-  {
-    "name": "葡萄",
-    "imageUrl": "/carzyfarm/葡萄.png",
-    "priceCoefficient": 24836.8915,
-    "maxWeight": 10.2,
-    "growthSpeed": 2400,
-    "type": "普通"
-  },
-  {
-    "name": "蟠桃",
-    "imageUrl": "/carzyfarm/蟠桃.png",
-    "priceCoefficient": 8783.1627,
-    "maxWeight": 20.4,
-    "growthSpeed": 1333.33,
-    "type": "普通"
-  },
-  {
-    "name": "惊奇菇",
-    "imageUrl": "/carzyfarm/惊奇菇.png",
-    "priceCoefficient": 49680.1819,
-    "maxWeight": 10.2,
-    "growthSpeed": 2400,
-    "type": "普通"
   },
   {
     "name": "仙人掌象",
     "imageUrl": "/carzyfarm/仙人掌象.png",
     "priceCoefficient": 9525.0487,
     "maxWeight": 34,
-    "growthSpeed": 720,
-    "type": "普通"
-  },
-  {
-    "name": "魔鬼朝天椒",
-    "imageUrl": "/carzyfarm/魔鬼朝天椒.png",
-    "priceCoefficient": 33143.6022,
-    "maxWeight": 10.2,
-    "growthSpeed": 2400,
-    "type": "普通"
-  },
-  {
-    "name": "月光草",
-    "imageUrl": "/carzyfarm/月光草.png",
-    "priceCoefficient": 343.8951,
-    "maxWeight": 3.4,
-    "growthSpeed": 111,
-    "type": "月球"
-  },
-  {
-    "name": "灰壤豆",
-    "imageUrl": "/carzyfarm/灰壤豆.png",
-    "priceCoefficient": 1374.736,
-    "maxWeight": 3.4,
-    "growthSpeed": 180,
-    "type": "月球"
-  },
-  {
-    "name": "月灯草",
-    "imageUrl": "/carzyfarm/月灯草.png",
-    "priceCoefficient": 1498.0086,
-    "maxWeight": 5.1,
-    "growthSpeed": 205,
-    "type": "月球"
-  },
-  {
-    "name": "月番茄",
-    "imageUrl": "/carzyfarm/月番茄.png",
-    "priceCoefficient": 662.4769,
-    "maxWeight": 10.2,
-    "growthSpeed": 111,
-    "type": "月球"
-  },
-  {
-    "name": "月环树",
-    "imageUrl": "/carzyfarm/月环树.png",
-    "priceCoefficient": 322.0468,
-    "maxWeight": 20.4,
-    "growthSpeed": 58,
-    "type": "月球"
-  },
-  {
-    "name": "银灰苔",
-    "imageUrl": "/carzyfarm/银灰苔.png",
-    "priceCoefficient": 3046.6455,
-    "maxWeight": 5.1,
-    "growthSpeed": 280,
-    "type": "月球"
-  },
-  {
-    "name": "月莓",
-    "imageUrl": "/carzyfarm/月莓.png",
-    "priceCoefficient": 3916.4157,
-    "maxWeight": 8.5,
-    "growthSpeed": 375,
-    "type": "月球"
-  },
-  {
-    "name": "星叶菜",
-    "imageUrl": "/carzyfarm/星叶菜.png",
-    "priceCoefficient": 3976.5503,
-    "maxWeight": 10.2,
-    "growthSpeed": 416,
-    "type": "月球"
-  },
-  {
-    "name": "月核树",
-    "imageUrl": "/carzyfarm/月核树.png",
-    "priceCoefficient": 3388.6303,
-    "maxWeight": 17,
-    "growthSpeed": 460,
-    "type": "月球"
-  },
-  {
-    "name": "液光藤",
-    "imageUrl": "/carzyfarm/液光藤.png",
-    "priceCoefficient": 3512.6104,
-    "maxWeight": 20.4,
-    "growthSpeed": 520,
-    "type": "月球"
-  },
-  {
-    "name": "幻月花",
-    "imageUrl": "/carzyfarm/幻月花.png",
-    "priceCoefficient": 8362.3227,
-    "maxWeight": 23.8,
-    "growthSpeed": 1142.5,
-    "type": "月球"
-  },
-  {
-    "name": "星空玫瑰",
-    "imageUrl": "/carzyfarm/星空玫瑰1.png",
-    "priceCoefficient": 33128.7533,
-    "maxWeight": 10.2,
-    "growthSpeed": 2966.6,
-    "type": "月球"
-  },
-  {
-    "name": "月兔",
-    "imageUrl": "/carzyfarm/月兔1.png",
-    "priceCoefficient": 11161.4743,
-    "maxWeight": 23.8,
-    "growthSpeed": 1524,
-    "type": "月球"
+    "growthSpeed": 720
   },
   {
     "name": "红包树",
-    "imageUrl": "/carzyfarm/红包树1.png",
+    "imageUrl": "/carzyfarm/新红包果.png",
     "priceCoefficient": 83300.1019,
     "maxWeight": 5.1,
-    "growthSpeed": 5270,
-    "type": "月球"
+    "growthSpeed": 5270
   },
   {
-    "name": "月影梅",
-    "imageUrl": "/carzyfarm/月影梅.png",
-    "priceCoefficient": 77270.106,
-    "maxWeight": 3.4,
-    "growthSpeed": 4000,
-    "type": "月球"
+    "name": "火龙狗",
+    "imageUrl": "/carzyfarm/火龙狗.png",
+    "priceCoefficient": 10868,
+    "maxWeight": 34,
+    "growthSpeed": 0
+  },
+  {
+    "name": "松果",
+    "imageUrl": "/carzyfarm/松果.png",
+    "priceCoefficient": 4615.5964,
+    "maxWeight": 17,
+    "growthSpeed": 570
+  },
+  {
+    "name": "幻月花",
+    "imageUrl": "/carzyfarm/新幻月花.png",
+    "priceCoefficient": 8362.3227,
+    "maxWeight": 23.8,
+    "growthSpeed": 1142.5
   },
   {
     "name": "彼岸花",
-    "imageUrl": "/carzyfarm/彼岸花1.png",
+    "imageUrl": "/carzyfarm/新彼岸花.png",
     "priceCoefficient": 49683.6217,
     "maxWeight": 10.2,
-    "growthSpeed": 2766,
-    "type": "月球"
-  },
-  {
-    "name": "月蟾蜍",
-    "imageUrl": "/carzyfarm/月蟾蜍1.png",
-    "priceCoefficient": 9807.0881,
-    "maxWeight": 34,
-    "growthSpeed": 990,
-    "type": "月球"
+    "growthSpeed": 2766
   }
 ]

@@ -10,7 +10,7 @@ BASE_MUTATIONS = [
     "金",
     "水晶",
     "流光",
-    "星空",  # 月球作物专属基础突变
+    "星空",
 ]
 
 
@@ -27,7 +27,6 @@ class Plant(BaseModel):
     max_weight: float
     growth_speed: float
     """作物长成所需时间/作物重量 秒/kg"""
-    type: Literal["普通", "月球"]
     special_mutations: tuple[str] | None = None
 
 
@@ -55,6 +54,7 @@ class Mutation(BaseModel):
         "intermediate",
         "rare",
         "past",
+        "new",
     ]
 
 

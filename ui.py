@@ -12,7 +12,7 @@ from fknc_calc import (
     Plant,
     mutation_name_map,
 )
-from fknc_calc.rules import RECIPES, is_mutation_disabled, MOON_ONLY
+from fknc_calc.rules import RECIPES, is_mutation_disabled
 from pydantic import ValidationError
 
 
@@ -257,30 +257,21 @@ def basic_info_panel(
     col1, col2 = st.columns([2, 1])
     with col1, st.container(horizontal=True):
         with st.container():
-            col_1, col_2 = st.columns([2, 3])
-
-            plant_types = Plant.model_fields["type"].annotation.__args__
-            with col_1:
-                plant_type = st.selectbox(
-                    "选择类型", plant_types, label_visibility="collapsed"
-                )
-
             # 提供作物选择
             plant_names = [
                 p.name
                 for p in sorted(
-                    (plant for plant in plants if plant.type == plant_type),
+                    plants,
                     key=lambda p: lazy_pinyin(p.name),
                 )
             ]
-            with col_2:
-                plant_name = st.selectbox(
-                    "选择作物", plant_names, label_visibility="collapsed"
-                )
-                # 获取选择的植物对象
-                plant = next(plant for plant in plants if plant.name == plant_name)
-                if plant.type != "月球":
-                    base_mutation_names.remove("星空")
+            plant_name = st.selectbox(
+                "选择作物", plant_names, label_visibility="collapsed"
+            )
+            # 获取选择的植物对象
+            plant = next(plant for plant in plants if plant.name == plant_name)
+
+            col_1, col_2 = st.columns([2, 3])
 
             speed_text = "速度"
             weight_text = "重量"
@@ -308,7 +299,6 @@ def basic_info_panel(
         st.image(url, width=80)
 
     with col2, st.container(gap=None):
-        st.write(f"类型: {plant.type}")
         st.write(f"重量: {plant.max_weight / 34:.2f}~{plant.max_weight:.2f} kg")
         if plant.growth_speed:
             st.write(f"速率: {plant.growth_speed / 100:.1f} %/(秒·kg)")
@@ -397,10 +387,6 @@ def main():
     )
 
     selectable_names = other_mutation_names
-    if selected_plant.type != "月球":
-        for name in MOON_ONLY:
-            if name in selectable_names:
-                selectable_names.remove(name)
 
     st.markdown(
         """
@@ -423,9 +409,7 @@ def main():
     # 处理剩下的顺序
     selectables = special + selectable_names
 
-    selected_mutations: set[str] = st.session_state.get(
-        f"selected-mutations-{selected_plant.type}", set()
-    )
+    selected_mutations: set[str] = st.session_state.get("selected-mutations", set())
 
     cols_len = 5
     cols = st.columns([1] * cols_len, gap=None, border=False)
@@ -456,7 +440,7 @@ def main():
                     if mutation_name in selected_mutations:
                         selected_mutations.remove(mutation_name)
 
-    st.session_state[f"selected-mutations-{selected_plant.type}"] = selected_mutations
+    st.session_state["selected-mutations"] = selected_mutations
 
     try:
         show_calculation(

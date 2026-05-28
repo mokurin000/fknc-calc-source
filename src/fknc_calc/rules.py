@@ -10,8 +10,6 @@ RECIPES = [
     {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
 ]
 
-MOON_ONLY = ["流火", "日蚀", "暗雾", "陨石", "太阳耀斑"]
-
 
 def get_all_ingredients(mutation: str, visited: set[str] | None = None) -> list[str]:
     """
@@ -62,10 +60,6 @@ def is_mutation_disabled(
     """
     if new_mutation == "潮湿":
         return False
-
-    # 非月球果实无法获得月球突变
-    if plant.type != "月球" and new_mutation in MOON_ONLY:
-        return True
 
     if new_mutation == "灼热":
         has_flow_fire = "流火" in selected_mutations
