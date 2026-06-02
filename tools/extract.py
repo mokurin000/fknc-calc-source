@@ -40,6 +40,14 @@ async def scrape(page: Page):
     plants = fknc_data["crops"]
     mutations = fknc_data["mutations"]
 
+    with open("game_data.json", "w", encoding="utf-8") as f:
+        json.dump(
+            fknc_data,
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
+
     with open("src/fknc_calc/plants.json", "w", encoding="utf-8") as f:
         json.dump(
             plants,

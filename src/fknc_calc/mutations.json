@@ -1,15 +1,9 @@
 [
   {
-    "name": "瓷化",
+    "name": "薯片",
     "color": "紫色",
-    "multiplier": 8,
-    "groupKey": "common"
-  },
-  {
-    "name": "星空",
-    "color": "彩色",
-    "multiplier": 40,
-    "groupKey": "quality"
+    "multiplier": 1.5,
+    "groupKey": "special"
   },
   {
     "name": "霓虹",
@@ -18,27 +12,45 @@
     "groupKey": "rare"
   },
   {
-    "name": "金币",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "past"
-  },
-  {
-    "name": "薯片",
-    "color": "紫色",
-    "multiplier": 1.5,
-    "groupKey": "special"
+    "name": "星空",
+    "color": "彩色",
+    "multiplier": 40,
+    "groupKey": "quality"
   },
   {
     "name": "橙钻",
     "color": "金色",
     "multiplier": 18,
-    "groupKey": "new"
+    "groupKey": "common"
   },
   {
-    "name": "太阳耀斑",
+    "name": "星环",
+    "color": "紫色",
+    "multiplier": 10,
+    "groupKey": "past"
+  },
+  {
+    "name": "幻彩",
+    "color": "金色",
+    "multiplier": 3,
+    "groupKey": "color"
+  },
+  {
+    "name": "亮晶晶",
+    "color": "紫色",
+    "multiplier": 10,
+    "groupKey": "intermediate"
+  },
+  {
+    "name": "方形",
+    "color": "紫色",
+    "multiplier": 1.5,
+    "groupKey": "special"
+  },
+  {
+    "name": "琥珀",
     "color": "蓝色",
-    "multiplier": 5,
+    "multiplier": 4.5,
     "groupKey": "intermediate"
   },
   {
@@ -48,7 +60,55 @@
     "groupKey": "rare"
   },
   {
-    "name": "方形",
+    "name": "流光",
+    "color": "彩色",
+    "multiplier": 30,
+    "groupKey": "quality"
+  },
+  {
+    "name": "异彩",
+    "color": "蓝色",
+    "multiplier": 1.5,
+    "groupKey": "color"
+  },
+  {
+    "name": "瓷化",
+    "color": "紫色",
+    "multiplier": 8,
+    "groupKey": "common"
+  },
+  {
+    "name": "太阳耀斑",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "intermediate"
+  },
+  {
+    "name": "日蚀",
+    "color": "紫色",
+    "multiplier": 10,
+    "groupKey": "rare"
+  },
+  {
+    "name": "冰冻",
+    "color": "绿色",
+    "multiplier": 4,
+    "groupKey": "common"
+  },
+  {
+    "name": "故障",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "past"
+  },
+  {
+    "name": "水晶",
+    "color": "金色",
+    "multiplier": 20,
+    "groupKey": "quality"
+  },
+  {
+    "name": "糖葫芦",
     "color": "紫色",
     "multiplier": 1.5,
     "groupKey": "special"
@@ -60,94 +120,10 @@
     "groupKey": "intermediate"
   },
   {
-    "name": "流光",
-    "color": "彩色",
-    "multiplier": 30,
-    "groupKey": "quality"
-  },
-  {
-    "name": "日蚀",
-    "color": "紫色",
-    "multiplier": 10,
-    "groupKey": "rare"
-  },
-  {
-    "name": "亮晶晶",
-    "color": "紫色",
-    "multiplier": 10,
-    "groupKey": "common"
-  },
-  {
-    "name": "极光",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "past"
-  },
-  {
-    "name": "幻彩",
-    "color": "金色",
-    "multiplier": 3,
-    "groupKey": "new"
-  },
-  {
-    "name": "水晶",
-    "color": "金色",
-    "multiplier": 20,
-    "groupKey": "quality"
-  },
-  {
-    "name": "星环",
-    "color": "紫色",
-    "multiplier": 10,
-    "groupKey": "rare"
-  },
-  {
-    "name": "幽魂",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "past"
-  },
-  {
-    "name": "灼热",
-    "color": "灰色",
-    "multiplier": 2,
-    "groupKey": "intermediate"
-  },
-  {
-    "name": "糖葫芦",
+    "name": "连体",
     "color": "紫色",
     "multiplier": 1.5,
     "groupKey": "special"
-  },
-  {
-    "name": "异彩",
-    "color": "蓝色",
-    "multiplier": 1.5,
-    "groupKey": "new"
-  },
-  {
-    "name": "故障",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "past"
-  },
-  {
-    "name": "沙尘",
-    "color": "灰色",
-    "multiplier": 2,
-    "groupKey": "intermediate"
-  },
-  {
-    "name": "惊魂夜",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "past"
-  },
-  {
-    "name": "琥珀",
-    "color": "蓝色",
-    "multiplier": 4.5,
-    "groupKey": "new"
   },
   {
     "name": "金",
@@ -156,45 +132,9 @@
     "groupKey": "quality"
   },
   {
-    "name": "连体",
-    "color": "紫色",
-    "multiplier": 1.5,
-    "groupKey": "special"
-  },
-  {
     "name": "落雷",
     "color": "绿色",
     "multiplier": 3,
-    "groupKey": "common"
-  },
-  {
-    "name": "结霜",
-    "color": "灰色",
-    "multiplier": 2,
-    "groupKey": "intermediate"
-  },
-  {
-    "name": "黄瓜蛇",
-    "color": "金色",
-    "multiplier": 2.5,
-    "groupKey": "special"
-  },
-  {
-    "name": "哈基咪",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "past"
-  },
-  {
-    "name": "银",
-    "color": "绿色",
-    "multiplier": 3,
-    "groupKey": "quality"
-  },
-  {
-    "name": "冰冻",
-    "color": "绿色",
-    "multiplier": 4,
     "groupKey": "common"
   },
   {
@@ -204,22 +144,22 @@
     "groupKey": "rare"
   },
   {
-    "name": "血月",
+    "name": "哈基咪",
     "color": "蓝色",
     "multiplier": 5,
-    "groupKey": "rare"
+    "groupKey": "past"
   },
   {
-    "name": "颤栗",
-    "color": "灰色",
-    "multiplier": 1,
-    "groupKey": "common"
-  },
-  {
-    "name": "万圣夜",
+    "name": "黄瓜蛇",
     "color": "金色",
-    "multiplier": 2,
+    "multiplier": 2.5,
     "groupKey": "special"
+  },
+  {
+    "name": "惊魂夜",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "past"
   },
   {
     "name": "彩虹",
@@ -228,28 +168,16 @@
     "groupKey": "rare"
   },
   {
-    "name": "覆雪",
+    "name": "银",
+    "color": "绿色",
+    "multiplier": 3,
+    "groupKey": "quality"
+  },
+  {
+    "name": "结霜",
     "color": "灰色",
     "multiplier": 2,
-    "groupKey": "common"
-  },
-  {
-    "name": "香蕉猴",
-    "color": "金色",
-    "multiplier": 2,
-    "groupKey": "special"
-  },
-  {
-    "name": "荧光",
-    "color": "蓝色",
-    "multiplier": 5,
-    "groupKey": "rare"
-  },
-  {
-    "name": "笑日葵",
-    "color": "彩色",
-    "multiplier": 10,
-    "groupKey": "special"
+    "groupKey": "intermediate"
   },
   {
     "name": "潮湿",
@@ -258,21 +186,93 @@
     "groupKey": "common"
   },
   {
+    "name": "覆雪",
+    "color": "灰色",
+    "multiplier": 2,
+    "groupKey": "common"
+  },
+  {
+    "name": "沙尘",
+    "color": "灰色",
+    "multiplier": 2,
+    "groupKey": "intermediate"
+  },
+  {
+    "name": "金币",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "past"
+  },
+  {
+    "name": "万圣夜",
+    "color": "金色",
+    "multiplier": 2,
+    "groupKey": "special"
+  },
+  {
+    "name": "极光",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "rare"
+  },
+  {
+    "name": "血月",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "past"
+  },
+  {
+    "name": "荧光",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "rare"
+  },
+  {
     "name": "迷雾",
     "color": "灰色",
     "multiplier": 2,
     "groupKey": "common"
   },
   {
+    "name": "生机",
+    "color": "灰色",
+    "multiplier": 2,
+    "groupKey": "intermediate"
+  },
+  {
+    "name": "香蕉猴",
+    "color": "金色",
+    "multiplier": 2,
+    "groupKey": "special"
+  },
+  {
+    "name": "颤栗",
+    "color": "灰色",
+    "multiplier": 1,
+    "groupKey": "common"
+  },
+  {
+    "name": "笑日葵",
+    "color": "彩色",
+    "multiplier": 10,
+    "groupKey": "special"
+  },
+  {
+    "name": "灼热",
+    "color": "灰色",
+    "multiplier": 2,
+    "groupKey": "intermediate"
+  },
+  {
+    "name": "幽魂",
+    "color": "蓝色",
+    "multiplier": 5,
+    "groupKey": "rare"
+  },
+  {
     "name": "陨石",
     "color": "绿色",
     "multiplier": 3,
     "groupKey": "rare"
-  },
-  {
-    "name": "生机",
-    "color": "灰色",
-    "multiplier": 2,
-    "groupKey": "common"
   }
 ]

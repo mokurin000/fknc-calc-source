@@ -110,7 +110,7 @@
     "name": "蓝莓",
     "imageUrl": "/carzyfarm/蓝莓.png",
     "priceCoefficient": 113,
-    "maxWeight": 34,
+    "maxWeight": 40.8,
     "growthSpeed": 0
   },
   {
@@ -366,7 +366,7 @@
   {
     "name": "芦荟",
     "imageUrl": "/carzyfarm/芦荟.png",
-    "priceCoefficient": 54282.0587,
+    "priceCoefficient": 54562.4115,
     "maxWeight": 10.2,
     "growthSpeed": 0
   },
@@ -411,7 +411,7 @@
   {
     "name": "幻月花",
     "imageUrl": "/carzyfarm/新幻月花.png",
-    "priceCoefficient": 8362.3227,
+    "priceCoefficient": 8362.4332,
     "maxWeight": 23.8,
     "growthSpeed": 1142.5
   },
