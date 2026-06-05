@@ -134,7 +134,13 @@ def load_data() -> tuple[list[Plant], list[Mutation]]:
             data = f.read()
             raw_list: list = orjson.loads(data)
             mutations = list(map(Mutation.model_validate, raw_list))
-            mutations.sort(key=lambda m: m.multiplier, reverse=True)
+            mutations.sort(
+                key=lambda m: (
+                    m.group_key != "past",
+                    m.multiplier,
+                ),
+                reverse=True,
+            )
 
     return plants, mutations
 
