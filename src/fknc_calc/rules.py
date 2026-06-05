@@ -4,8 +4,10 @@ __all__ = ["is_mutation_disabled"]
 
 # 配方数据：每种突变产物所需的原料
 RECIPES = [
+    {"ingredients": ["亮晶晶", "琥珀"], "result": "橙钻"},
     {"ingredients": ["太阳耀斑", "灼热"], "result": "流火"},
     {"ingredients": ["陶化", "灼热"], "result": "瓷化"},
+    {"ingredients": ["生机", "潮湿"], "result": "琥珀"},
     {"ingredients": ["沙尘", "潮湿"], "result": "陶化"},
     {"ingredients": ["潮湿", "结霜"], "result": "冰冻"},
 ]

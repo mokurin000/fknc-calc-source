@@ -54,7 +54,7 @@ class Mutation(BaseModel):
         "intermediate",
         "rare",
         "past",
-        "new",
+        "color",
     ]
 
 
