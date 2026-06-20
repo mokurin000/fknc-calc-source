@@ -296,7 +296,7 @@ def basic_info_panel(
                 )
 
         url = f"https://www.fknc.top{plant.image_url}"
-        st.image(url, width=80)
+        st.image(url, width=80, caption=plant_name)
 
     with col2, st.container(gap=None):
         st.write(f"重量: {plant.max_weight / 34:.2f}~{plant.max_weight:.2f} kg")
