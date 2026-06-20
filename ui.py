@@ -5,11 +5,11 @@ from typing import Callable
 import streamlit as st
 from pypinyin import lazy_pinyin
 from fknc_calc import (
+    BASE_MUTATIONS,
     Mutation,
+    Plant,
     load_data,
     calc_price,
-    BASE_MUTATIONS,
-    Plant,
     mutation_name_map,
 )
 from fknc_calc.rules import RECIPES, is_mutation_disabled
@@ -257,17 +257,27 @@ def basic_info_panel(
     col1, col2 = st.columns([2, 1])
     with col1, st.container(horizontal=True):
         with st.container():
+            col_1, col_2 = st.columns([2, 3])
+
+            plant_types = Plant.model_fields["quality"].annotation.__args__
+            with col_1:
+                plant_quality = st.selectbox(
+                    "选择品质", plant_types, label_visibility="collapsed"
+                )
+
             # 提供作物选择
             plant_names = [
                 p.name
                 for p in sorted(
-                    plants,
+                    (plant for plant in plants if plant.quality == plant_quality),
                     key=lambda p: lazy_pinyin(p.name),
                 )
             ]
-            plant_name = st.selectbox(
-                "选择作物", plant_names, label_visibility="collapsed"
-            )
+            with col_2:
+                plant_name = st.selectbox(
+                    "选择作物", plant_names, label_visibility="collapsed"
+                )
+
             # 获取选择的植物对象
             plant = next(plant for plant in plants if plant.name == plant_name)
 
