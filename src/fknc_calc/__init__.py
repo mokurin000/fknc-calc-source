@@ -27,7 +27,7 @@ class Plant(BaseModel):
     max_weight: float
     growth_speed: float
     """作物长成所需时间/作物重量 秒/kg"""
-    seed_price: int
+    seed_price: int | None
     """种子价格"""
     quality: Literal["灰色", "绿色", "蓝色", "紫色", "金色", "至臻"]
     special_mutations: tuple[str] | None = None

@@ -314,6 +314,13 @@ def basic_info_panel(
             st.write(f"速率: {plant.growth_speed / 100:.1f} %/(秒·kg)")
         else:
             st.write("速率: 未知")
+        if plant.seed_price is not None:
+            if plant.seed_price > 10000:
+                st.write(f"价格: {plant.seed_price // 10000}万")
+            else:
+                st.write(f"价格: {plant.seed_price}")
+        else:
+            st.write("价格: 未知")
 
     if input_approach == weight_text:
         weight = input_by_weight(plant)
