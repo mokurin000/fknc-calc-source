@@ -404,7 +404,7 @@
     "priceCoefficient": 33128.7533,
     "maxWeight": 10.2,
     "growthSpeed": 2966.6,
-    "seedPrice": 12000000,
+    "seedPrice": 11200000,
     "quality": "至臻"
   },
   {
@@ -464,7 +464,7 @@
   {
     "name": "芦荟",
     "imageUrl": "/carzyfarm/芦荟.png",
-    "priceCoefficient": 54563.5995,
+    "priceCoefficient": 54614.6807,
     "maxWeight": 10.2,
     "growthSpeed": 2060,
     "seedPrice": 27500000,
@@ -488,7 +488,7 @@
     "priceCoefficient": 9525.0487,
     "maxWeight": 34,
     "growthSpeed": 720,
-    "seedPrice": 24000000,
+    "seedPrice": 30000000,
     "quality": "至臻"
   },
   {
@@ -538,10 +538,10 @@
   },
   {
     "name": "马蹄莲",
-    "imageUrl": "/crazyfarm/暂无图片.png",
+    "imageUrl": "/carzyfarm/新马蹄莲.png",
     "priceCoefficient": 5078.9876,
     "maxWeight": 20.4,
-    "growthSpeed": 0,
+    "growthSpeed": 575,
     "seedPrice": 5000000,
     "quality": "至臻"
   }
