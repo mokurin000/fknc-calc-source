@@ -15,4 +15,6 @@ dependencies = [
 package = true
 
 [dependency-groups]
-dev = ["playwright>=1.60.0"]
+dev = [
+    "zendriver>=0.15.5",
+]

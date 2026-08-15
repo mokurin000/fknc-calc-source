@@ -3,39 +3,45 @@
 import asyncio
 import json
 
-from playwright.async_api import async_playwright, Page
-
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+import zendriver as zd
 
 
-async def scrape(page: Page):
-    email_login = page.locator("div.login-tab-row > div.login-tab:nth-child(2)")
-    email = page.locator("input[type=email]")
-    password = page.locator("input[type=password]")
-    eula = page.locator("input[type=checkbox]")
-    login = page.locator("button[type=submit]")
+async def scrape(page: zd.Tab):
 
-    await page.goto("https://www.fknc.top")
+    await page.get("https://www.fknc.top")
+    await page.wait_for_ready_state(until="complete")
+
+    # Avoid the invitation modal appearing during scraping.
     await page.evaluate('localStorage["invite_modal_first_shown"] = "1"')
 
-    await email_login.click(timeout=0)
-    await email.fill("mokurin000@gmail.com")
-    await password.fill("9XlM3fhaGVyguvXJun26iP9UCpa935")
-    await eula.check()
+    email_login = await page.select(
+        "div.login-tab-row > div.login-tab:nth-child(2)",
+        timeout=60,
+    )
+    await email_login.click()
+
+    email = await page.select("input[type=email]")
+    password = await page.select("input[type=password]")
+    eula = await page.select("input[type=checkbox]")
+    login = await page.select("button[type=submit]")
+
+    await email.send_keys("mokurin000@gmail.com")
+    await password.send_keys("9XlM3fhaGVyguvXJun26iP9UCpa935")
+    await eula.click()
 
     await login.click()
 
     fknc_data = None
 
+    # `fknc_game_data` is written to localStorage asynchronously after login,
+    # so wait until the application has populated it.
     while fknc_data is None:
         await asyncio.sleep(0.1)
 
-        state = await page.context.storage_state()
-        fknc_localStorage = state["origins"][0]["localStorage"]
-        for entry in fknc_localStorage:
-            if entry["name"] == "fknc_game_data":
-                fknc_data = json.loads(entry["value"])
-                break
+        value = await page.evaluate('localStorage.getItem("fknc_game_data")')
+
+        if value:
+            fknc_data = json.loads(value)
 
     plants = fknc_data["crops"]
     mutations = fknc_data["mutations"]
@@ -55,14 +61,16 @@ async def scrape(page: Page):
             ensure_ascii=False,
             indent=2,
         )
+
+    def clean_mut(mut: dict) -> dict:
+        # These fields are runtime/UI metadata and are not needed by the
+        # calculator.
+        mut.pop("sortOrder", None)
+        mut.pop("isActive", None)
+        mut.pop("shareBitIndex", None)
+        return mut
+
     with open("src/fknc_calc/mutations.json", "w", encoding="utf-8") as f:
-
-        def clean_mut(mut: dict) -> dict:
-            mut.pop("sortOrder")
-            mut.pop("isActive")
-            mut.pop("shareBitIndex")
-            return mut
-
         json.dump(
             [clean_mut(mut) for mut in mutations],
             f,
@@ -72,16 +80,16 @@ async def scrape(page: Page):
 
 
 async def main():
-    async with async_playwright() as pw:
-        async with await pw.chromium.launch(
-            channel="chrome",
-            headless=False,
-        ) as browser:
-            async with await browser.new_context(
-                user_agent=USER_AGENT,
-            ) as ctx:
-                async with await ctx.new_page() as page:
-                    await scrape(page)
+    browser = await zd.start(
+        headless=True,
+    )
+
+    try:
+        page = await browser.get("https://www.fknc.top")
+        await scrape(page)
+    finally:
+        print("Scrape done, cleaning-up...")
+        await browser.stop()
 
 
 if __name__ == "__main__":
