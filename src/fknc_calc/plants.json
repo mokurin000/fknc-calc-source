@@ -571,5 +571,14 @@
     "growthSpeed": 800,
     "seedPrice": 28000000,
     "quality": "至臻"
+  },
+  {
+    "name": "秋水仙",
+    "imageUrl": "/carzyfarm/秋水仙.png",
+    "priceCoefficient": 10352,
+    "maxWeight": 34,
+    "growthSpeed": 0,
+    "seedPrice": 33000000,
+    "quality": "至臻"
   }
 ]
